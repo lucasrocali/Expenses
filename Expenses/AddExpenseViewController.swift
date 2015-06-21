@@ -10,9 +10,11 @@ import UIKit
 
 class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var model = Model.sharedInstance
+    
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         var alert = UIAlertView()
-        if category {
+        if model.category {
             alert.title = "Enter new category"
         } else {
             alert.title = "Enter new sub category"
@@ -29,10 +31,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
             print(textField!.text)
-            if category {
-                data.append(textField!.text)
+            if model.category {
+                model.data.append(textField!.text)
             } else {
-                subdata.append(textField!.text)
+                model.subdata.append(textField!.text)
             }
             cvCategory.reloadData()
             
@@ -48,16 +50,11 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
-    var selectedIndex: Int?
-    var category = true
-    var calculatorNumbers = ["7","8","9","/","4","5","6","x","1","2","3","-","0",".","C","+"]
-    var data = ["a","b","c","d","e","f","g","h","i"]
-    var subdata = ["sa","sb","sc","sd","se"]
-    var integer = 0
-    @IBAction func backToCategories(sender: AnyObject) {
+    
+        @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
-        category = true
-        selectedIndex = nil
+        model.category = true
+        model.selectedIndex = nil
         self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
@@ -89,15 +86,15 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
         if collectionView === self.cvCategory {
-            if category {
+            if model.category {
                 
-                count = data.count
+                count = model.data.count
             } else {
-                count = subdata.count
+                count = model.subdata.count
             }
             return count
         }
-        return calculatorNumbers.count
+        return model.calculatorNumbers.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -108,16 +105,16 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.backgroundColor = UIColor.grayColor()
-            if selectedIndex == indexPath.row && !category {
+            if model.selectedIndex == indexPath.row && !model.category {
                 cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             }
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            if category{
-                cell.lblName.text = data[indexPath.row]
+            if model.category{
+                cell.lblName.text = model.data[indexPath.row]
             } else {
-                cell.lblName.text = subdata[indexPath.row]
+                cell.lblName.text = model.subdata[indexPath.row]
             }
             return cell
         } else {
@@ -129,29 +126,17 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            cell.lblNumber.text = calculatorNumbers[indexPath.row]
+            cell.lblNumber.text = model.calculatorNumbers[indexPath.row]
             return cell
         }
         
     }
-    func getNumberWhitoutDot(str: String) -> String {
-        var t : String = ""
-        for s in str{
-            if s == "."{
-                break
-            }
-            t = t + "\(s)"
-        }
-        return t
-    }
-    
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
-    {
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         if collectionView === self.cvCategory {
-            if selectedIndex != nil {
-                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: selectedIndex!, inSection: 0)
+            if model.selectedIndex != nil {
+                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndex!, inSection: 0)
                 var celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
-                if !category {
+                if !model.category {
                     celll!.backgroundColor = UIColor.clearColor()
                 }
             }
@@ -159,51 +144,42 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             println("Cell \(indexPath.row) selected")
             var cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            if !category {
-                selectedIndex = indexPath.row
+            if !model.category {
+                model.selectedIndex = indexPath.row
             }
-            category = false
+            model.category = false
             self.cvCategory.reloadData()
         } else {
-            if calculatorNumbers[indexPath.row] == "C" {
-                lblTotal.text = "0"
-                lblCalculation.text = "0"
-                integer = 0
-            }
-            if (indexPath.row + 1)%4 != 0 && indexPath.row != 14{
-                if indexPath.row == 13 {
-                    integer = 1
-                } else {
-                    var lastTotal : String = lblTotal.text! as String
-                    var total = "0"
-                    if integer == 0 {
-                        if lastTotal == "0" {
-                            total = calculatorNumbers[indexPath.row] + ".00"
-                        } else {
-                            total = getNumberWhitoutDot(lastTotal) + calculatorNumbers[indexPath.row] + ".00"
-                        }
-                        lblTotal.text = total
-                        lblCalculation.text = total
-                        println("Pressed \(calculatorNumbers[indexPath.row]) at \(indexPath.row)")
-                    } else if integer == 1{
-                        integer = 2
-                        total = getNumberWhitoutDot(lastTotal) + "." + calculatorNumbers[indexPath.row] + "0"
-                         lblTotal.text = total
-                        lblCalculation.text = total
-                       println("PRIMEIRO DECIMAL")
-                    }
-                    else if integer == 2{
-                        
-                        total = lastTotal.substringToIndex(lastTotal.endIndex.predecessor()) + calculatorNumbers[indexPath.row]
-                        lblTotal.text = total
-                        lblCalculation.text = total
-                        println("SEGUNDO DECIMAL")
-                        integer = 3
-                    }
+            println("Ihuu")
+            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+        }
+    }
+    
+    
+    
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
+    {
+        if collectionView === self.cvCategory {
+            if model.selectedIndex != nil {
+                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndex!, inSection: 0)
+                var celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
+                if !model.category {
+                    celll!.backgroundColor = UIColor.clearColor()
                 }
-            } else {
-                
             }
+            
+            println("Cell \(indexPath.row) selected")
+            var cell = collectionView.cellForItemAtIndexPath(indexPath)
+            cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+            if !model.category {
+                model.selectedIndex = indexPath.row
+            }
+            model.category = false
+            self.cvCategory.reloadData()
+        } else {
+            println("Ihuu")
+            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
         }
     }
     

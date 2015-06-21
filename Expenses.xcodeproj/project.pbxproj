@@ -100,6 +100,7 @@
 		784D9ED91B31C137009AC784 /* Expenses */ = {
 			isa = PBXGroup;
 			children = (
+				785603AC1B3709F000349FD8 /* Model */,
 				784D9EFF1B31D11A009AC784 /* Controller */,
 				784D9EDC1B31C137009AC784 /* AppDelegate.swift */,
 				784D9EE31B31C137009AC784 /* Main.storyboard */,
@@ -107,7 +108,6 @@
 				784D9EE81B31C137009AC784 /* LaunchScreen.xib */,
 				784D9EDE1B31C137009AC784 /* Expenses.xcdatamodeld */,
 				784D9EDA1B31C137009AC784 /* Supporting Files */,
-				785603AA1B36FE0800349FD8 /* Model.swift */,
 			);
 			path = Expenses;
 			sourceTree = "<group>";
@@ -154,6 +154,14 @@
 				785603A81B36B27800349FD8 /* CalculatorCollectionViewCell.swift */,
 			);
 			name = Cells;
+			sourceTree = "<group>";
+		};
+		785603AC1B3709F000349FD8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				785603AA1B36FE0800349FD8 /* Model.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
