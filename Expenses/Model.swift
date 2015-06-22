@@ -25,20 +25,26 @@ class Model {
     var calculator : Float = 0.00
     var selectedIndex: Int?
     var category = true
-    var calculatorNumbers = ["7","8","9","/","4","5","6","x","1","2","3","-","0",".","C","+"]
+    var calculatorNumbers = ["7","8","9","/","4","5","6","x","1","2","3","-","0",".","=","+"]
     var data = ["a","b","c","d","e","f","g","h","i"]
     var subdata = ["sa","sb","sc","sd","se"]
     
-    func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
+    func resetInput() {
+        integerNum = 0
+        calculating = "0"
+        calculator = 0.00
+    }
+    
+    func getTotalAndCalculation(indexPressed:Int, lastTotal:String, calculatingString:String) -> (String,String) {
         var keyPressed = calculatorNumbers[indexPressed]
         var totalText = ""
         var calculationText = ""
-        if keyPressed == "C" {
-            totalText = "0"
-            calculationText = "0"
-            integerNum = 0
+        if keyPressed == "=" {
+            totalText = lastTotal
+            calculationText = lastTotal + " "
+            //integerNum = 0
             calculating = "0"
-            calculator = 0.00
+            calculator = (lastTotal as NSString).floatValue
             return (totalText,calculationText)
         }
         if (indexPressed + 1)%4 != 0 && indexPressed != 14{
@@ -56,48 +62,50 @@ class Model {
                         total = getNumberWhithoutDot(lastTotal) + keyPressed + ".00"
                     }
                     totalText = total
-                    calculationText = total
+                    calculationText = total + " "
                     println("Pressed \(keyPressed) at \(indexPressed)")
                 } else if integerNum == 1{
                     integerNum = 2
                     total = getNumberWhithoutDot(lastTotal) + "." + keyPressed + "0"
                     totalText = total
-                    calculationText = total
+                    calculationText = total + " "
                     println("PRIMEIRO DECIMAL")
                 }
                 else if integerNum == 2{
                     
                     total = lastTotal.substringToIndex(lastTotal.endIndex.predecessor()) + keyPressed
                     totalText = total
-                    calculationText = total
+                    calculationText = total + " "
                     println("SEGUNDO DECIMAL")
                     integerNum = 3
                 }
             } else {
                 
                 var firstNum : Float = (lastTotal as NSString).floatValue
-                 var secondNum : Float = 0.00
+                var secondNum : Float = 0.00
                 if calculator != 0.00 {
                     secondNum  = ("\(Int(calculator))" + keyPressed + ".00" as NSString).floatValue
                 } else {
-                     secondNum  = (keyPressed + ".00" as NSString).floatValue
+                    secondNum  = (keyPressed + ".00" as NSString).floatValue
                 }
                 calculator = secondNum
                 println("Calculando \(firstNum) \(secondNum)")
-                    //var sum = calculateTotal(firstNum, n2: secondNum, type: calculating)
+                //var sum = calculateTotal(firstNum, n2: secondNum, type: calculating)
                 
                 //totalText = "\(sum)"
-                calculateTotal()
-                totalText = lastTotal
-                calculationText = lastTotal + " " + calculating + " " + keyPressed + ".00"
+                
+                //calculateTotal()
+                calculationText = calculatingString + " " + keyPressed + ".00 "
+                totalText =  "\(calculateTotal(calculationText))"
+                
                 //calculating = "0"
             }
             
         } else {
             totalText = lastTotal
             calculating = keyPressed
-            calculationText = lastTotal + " " + keyPressed
-
+            calculationText =  calculatingString  + keyPressed
+            
             println("others")
         }
         return (totalText,calculationText)
@@ -114,9 +122,19 @@ class Model {
         return t
     }
     
-    func calculateTotal(/*str:String*/) /*-> Float*/ {
-        var str = "6.00 / 3.00 - 18.00 "
-        
+    func keepPreference (ops:[String]) -> Bool {
+        var hasPreference = false
+        for op in ops {
+            if op == "x" || op == "/" {
+                hasPreference = true
+            }
+        }
+        return hasPreference
+    }
+    
+    func calculateTotal(str:String) -> Float {
+        //var str = "6.00 / 3.00 - 18.00 "
+        println("STR ==== " + str)
         var n : [Float] = []
         var o : [String] = []
         var num : String = ""
@@ -124,7 +142,7 @@ class Model {
         for s in str {
             // if isNum(s){
             if s != " " {
-            num = num + "\(s)"
+                num = num + "\(s)"
             }
             //}
             if s == " " {
@@ -143,65 +161,55 @@ class Model {
         }
         println(n)
         println(o)
-        
-        var empty = false
-        var hasPreference = true
-        while !empty {
-            for i in 0 ... o.count {
-                if hasPreference {
-                    if o[i] == "x" {
-                        hasPreference = false
-                        var res = n[i]*n[i+1]
-                        n[i] = res
-                        n.removeAtIndex(i+1)
-                        o.removeAtIndex(i)
-                        break
-                    } else if o[i] == "/" {
-                        hasPreference = false
-                        var res = n[i]/n[i+1]
-                        n[i] = res
-                        n.removeAtIndex(i+1)
-                        o.removeAtIndex(i)
-                        break
-                    }
-                } else {
-                    println("\(i)")
-                    if o[i] == "+" {
-                        println("+")
-                        var res = n[i]+n[i+1]
-                        n[i] = res
-                        n.removeAtIndex(i+1)
-                        o.removeAtIndex(i)
-                        break
-                    }
-                    if o[i] == "-" {
-                        var res = n[i]-n[i+1]
-                        n[i] = res
-                        n.removeAtIndex(i+1)
-                        o.removeAtIndex(i)
-                        break
+        if o.count > 0 {
+            var empty = false
+            var hasPreference : Bool = keepPreference(o)
+            
+            while !empty {
+                for i in 0 ... o.count {
+                    if hasPreference {
+                        if o[i] == "x" {
+                            var res = n[i]*n[i+1]
+                            n[i] = res
+                            n.removeAtIndex(i+1)
+                            o.removeAtIndex(i)
+                            hasPreference = keepPreference(o)
+                            break
+                        } else if o[i] == "/" {
+                            var res = n[i]/n[i+1]
+                            n[i] = res
+                            n.removeAtIndex(i+1)
+                            o.removeAtIndex(i)
+                            hasPreference = keepPreference(o)
+                            break
+                        }
+                    } else {
+                        println("\(i)")
+                        if o[i] == "+" {
+                            println("+")
+                            var res = n[i]+n[i+1]
+                            n[i] = res
+                            n.removeAtIndex(i+1)
+                            o.removeAtIndex(i)
+                            break
+                        }
+                        if o[i] == "-" {
+                            var res = n[i]-n[i+1]
+                            n[i] = res
+                            n.removeAtIndex(i+1)
+                            o.removeAtIndex(i)
+                            break
+                        }
                     }
                 }
+                if o.count == 0 {
+                    empty = true
+                }
+                
             }
-            if o.count == 0 {
-                empty = true
-            }
-            
         }
         println(n)
-
-       /*
-        var res : Float = 0.00
-        if type == "/" {
-            res = n1 / n2
-        } else if type == "x" {
-            res = n1 * n2
-        } else if type == "-" {
-            res = n1 - n2
-        } else if type == "+" {
-            res = n1 + n2
-        }
-        return res*/
+        return n[0]
     }
     
     

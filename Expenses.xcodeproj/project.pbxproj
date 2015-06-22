@@ -18,6 +18,25 @@
 		785603941B35B18500349FD8 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785603931B35B18500349FD8 /* CategoryCollectionViewCell.swift */; };
 		785603A91B36B27800349FD8 /* CalculatorCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785603A81B36B27800349FD8 /* CalculatorCollectionViewCell.swift */; };
 		785603AB1B36FE0800349FD8 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785603AA1B36FE0800349FD8 /* Model.swift */; };
+		785603B01B3835F100349FD8 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603AD1B3835F100349FD8 /* Bolts.framework */; };
+		785603B11B3835F100349FD8 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603AE1B3835F100349FD8 /* Parse.framework */; };
+		785603B21B3835F100349FD8 /* ParseUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603AF1B3835F100349FD8 /* ParseUI.framework */; };
+		785603B41B38360B00349FD8 /* ParseCrashReporting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603B31B38360B00349FD8 /* ParseCrashReporting.framework */; };
+		785603B61B38460C00349FD8 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603B51B38460C00349FD8 /* AudioToolbox.framework */; };
+		785603B81B38461400349FD8 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603B71B38461400349FD8 /* CFNetwork.framework */; };
+		785603BA1B38461900349FD8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603B91B38461900349FD8 /* CoreGraphics.framework */; };
+		785603BC1B38462300349FD8 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603BB1B38462300349FD8 /* CoreLocation.framework */; };
+		785603BE1B38462F00349FD8 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603BD1B38462F00349FD8 /* MobileCoreServices.framework */; };
+		785603C01B38463700349FD8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603BF1B38463700349FD8 /* QuartzCore.framework */; };
+		785603C21B38463F00349FD8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603C11B38463F00349FD8 /* Security.framework */; };
+		785603C41B38464600349FD8 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603C31B38464600349FD8 /* StoreKit.framework */; };
+		785603C61B38467300349FD8 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603C51B38467300349FD8 /* SystemConfiguration.framework */; };
+		785603C81B38468D00349FD8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603C71B38468D00349FD8 /* libz.dylib */; };
+		785603CA1B38469500349FD8 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603C91B38469500349FD8 /* libsqlite3.dylib */; };
+		785603CC1B38589E00349FD8 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 785603CB1B38589E00349FD8 /* InitialViewController.swift */; };
+		785603CE1B385B3100349FD8 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603CD1B385B3100349FD8 /* Accounts.framework */; };
+		785603D01B385B3A00349FD8 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 785603CF1B385B3A00349FD8 /* Social.framework */; };
+		788EEC991B38630A00575FF6 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788EEC981B38630A00575FF6 /* Category.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +78,25 @@
 		785603931B35B18500349FD8 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		785603A81B36B27800349FD8 /* CalculatorCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CalculatorCollectionViewCell.swift; sourceTree = "<group>"; };
 		785603AA1B36FE0800349FD8 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		785603AD1B3835F100349FD8 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		785603AE1B3835F100349FD8 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Parse.framework; sourceTree = "<group>"; };
+		785603AF1B3835F100349FD8 /* ParseUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseUI.framework; sourceTree = "<group>"; };
+		785603B31B38360B00349FD8 /* ParseCrashReporting.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ParseCrashReporting.framework; sourceTree = "<group>"; };
+		785603B51B38460C00349FD8 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		785603B71B38461400349FD8 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		785603B91B38461900349FD8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		785603BB1B38462300349FD8 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		785603BD1B38462F00349FD8 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		785603BF1B38463700349FD8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		785603C11B38463F00349FD8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		785603C31B38464600349FD8 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		785603C51B38467300349FD8 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		785603C71B38468D00349FD8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		785603C91B38469500349FD8 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		785603CB1B38589E00349FD8 /* InitialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		785603CD1B385B3100349FD8 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
+		785603CF1B385B3A00349FD8 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
+		788EEC981B38630A00575FF6 /* Category.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +104,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				785603D01B385B3A00349FD8 /* Social.framework in Frameworks */,
+				785603CE1B385B3100349FD8 /* Accounts.framework in Frameworks */,
+				785603CA1B38469500349FD8 /* libsqlite3.dylib in Frameworks */,
+				785603C81B38468D00349FD8 /* libz.dylib in Frameworks */,
+				785603C61B38467300349FD8 /* SystemConfiguration.framework in Frameworks */,
+				785603C41B38464600349FD8 /* StoreKit.framework in Frameworks */,
+				785603C21B38463F00349FD8 /* Security.framework in Frameworks */,
+				785603C01B38463700349FD8 /* QuartzCore.framework in Frameworks */,
+				785603BE1B38462F00349FD8 /* MobileCoreServices.framework in Frameworks */,
+				785603BC1B38462300349FD8 /* CoreLocation.framework in Frameworks */,
+				785603BA1B38461900349FD8 /* CoreGraphics.framework in Frameworks */,
+				785603B81B38461400349FD8 /* CFNetwork.framework in Frameworks */,
+				785603B61B38460C00349FD8 /* AudioToolbox.framework in Frameworks */,
+				785603B21B3835F100349FD8 /* ParseUI.framework in Frameworks */,
+				785603B11B3835F100349FD8 /* Parse.framework in Frameworks */,
+				785603B01B3835F100349FD8 /* Bolts.framework in Frameworks */,
+				785603B41B38360B00349FD8 /* ParseCrashReporting.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +137,23 @@
 		784D9ECE1B31C137009AC784 = {
 			isa = PBXGroup;
 			children = (
+				785603CF1B385B3A00349FD8 /* Social.framework */,
+				785603CD1B385B3100349FD8 /* Accounts.framework */,
+				785603C91B38469500349FD8 /* libsqlite3.dylib */,
+				785603C71B38468D00349FD8 /* libz.dylib */,
+				785603C51B38467300349FD8 /* SystemConfiguration.framework */,
+				785603C31B38464600349FD8 /* StoreKit.framework */,
+				785603C11B38463F00349FD8 /* Security.framework */,
+				785603BF1B38463700349FD8 /* QuartzCore.framework */,
+				785603BD1B38462F00349FD8 /* MobileCoreServices.framework */,
+				785603BB1B38462300349FD8 /* CoreLocation.framework */,
+				785603B91B38461900349FD8 /* CoreGraphics.framework */,
+				785603B71B38461400349FD8 /* CFNetwork.framework */,
+				785603B51B38460C00349FD8 /* AudioToolbox.framework */,
+				785603B31B38360B00349FD8 /* ParseCrashReporting.framework */,
+				785603AD1B3835F100349FD8 /* Bolts.framework */,
+				785603AE1B3835F100349FD8 /* Parse.framework */,
+				785603AF1B3835F100349FD8 /* ParseUI.framework */,
 				784D9ED91B31C137009AC784 /* Expenses */,
 				784D9EF21B31C137009AC784 /* ExpensesTests */,
 				784D9ED81B31C137009AC784 /* Products */,
@@ -140,9 +212,10 @@
 		784D9EFF1B31D11A009AC784 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				784D9F041B31DFDD009AC784 /* Cells */,
+				785603CB1B38589E00349FD8 /* InitialViewController.swift */,
 				784D9F001B31D14B009AC784 /* ExpensesViewController.swift */,
 				784D9F021B31D36A009AC784 /* AddExpenseViewController.swift */,
+				784D9F041B31DFDD009AC784 /* Cells */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -160,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				785603AA1B36FE0800349FD8 /* Model.swift */,
+				788EEC981B38630A00575FF6 /* Category.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -270,8 +344,10 @@
 				785603941B35B18500349FD8 /* CategoryCollectionViewCell.swift in Sources */,
 				784D9F031B31D36A009AC784 /* AddExpenseViewController.swift in Sources */,
 				784D9EDD1B31C137009AC784 /* AppDelegate.swift in Sources */,
+				788EEC991B38630A00575FF6 /* Category.swift in Sources */,
 				785603A91B36B27800349FD8 /* CalculatorCollectionViewCell.swift in Sources */,
 				784D9F011B31D14B009AC784 /* ExpensesViewController.swift in Sources */,
+				785603CC1B38589E00349FD8 /* InitialViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +476,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Expenses/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -410,6 +490,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Expenses/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

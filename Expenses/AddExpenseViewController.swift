@@ -50,6 +50,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     var screenSize: CGRect!
     var screenWidth: CGFloat!
     var screenHeight: CGFloat!
+    let tapRec = UITapGestureRecognizer()
     
         @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
@@ -76,7 +77,18 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         
         lblTotal.text = "0"
         lblCalculation.text = "0"
+        
+        tapRec.addTarget(self, action: "labelTapped")
+        lblTotal.addGestureRecognizer(tapRec)
     }
+    
+    func labelTapped(){
+        println("labelTapped")
+        model.resetInput()
+        lblTotal.text = "0"
+        lblCalculation.text = "0"
+    }
+
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -131,7 +143,9 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         }
         
     }
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    
+    func tappedCaculator(collectionView: UICollectionView, indexPath: NSIndexPath) {
+        
         if collectionView === self.cvCategory {
             if model.selectedIndex != nil {
                 var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndex!, inSection: 0)
@@ -151,8 +165,14 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             self.cvCategory.reloadData()
         } else {
             println("Ihuu")
-            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!,calculatingString:lblCalculation.text!)
         }
+    }
+    
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        tappedCaculator(collectionView,indexPath:indexPath)
+        
     }
     
     
@@ -160,27 +180,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        if collectionView === self.cvCategory {
-            if model.selectedIndex != nil {
-                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndex!, inSection: 0)
-                var celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
-                if !model.category {
-                    celll!.backgroundColor = UIColor.clearColor()
-                }
-            }
-            
-            println("Cell \(indexPath.row) selected")
-            var cell = collectionView.cellForItemAtIndexPath(indexPath)
-            cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            if !model.category {
-                model.selectedIndex = indexPath.row
-            }
-            model.category = false
-            self.cvCategory.reloadData()
-        } else {
-            println("Ihuu")
-            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
-        }
+        tappedCaculator(collectionView,indexPath:indexPath)
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout:UICollectionViewLayout!,sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
