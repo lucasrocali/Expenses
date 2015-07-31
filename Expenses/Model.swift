@@ -28,6 +28,9 @@ class Model {
     var calculatorNumbers = ["7","8","9","/","4","5","6","x","1","2","3","-","0",".","=","+"]
     var data = ["a","b","c","d","e","f","g","h","i"]
     var subdata = ["sa","sb","sc","sd","se"]
+    var calculationText = ""
+    var oneDot : Bool = false
+    var oneOp : Bool = false
     
     func resetInput() {
         integerNum = 0
@@ -35,78 +38,113 @@ class Model {
         calculator = 0.00
     }
     
-    func getTotalAndCalculation(indexPressed:Int, lastTotal:String, calculatingString:String) -> (String,String) {
+    func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
         var keyPressed = calculatorNumbers[indexPressed]
-        var totalText = ""
-        var calculationText = ""
+        var totalText = lastTotal
         if keyPressed == "=" {
             totalText = lastTotal
-            calculationText = lastTotal + " "
+            calculationText = lastTotal
             //integerNum = 0
             calculating = "0"
             calculator = (lastTotal as NSString).floatValue
             return (totalText,calculationText)
         }
-        if (indexPressed + 1)%4 != 0 && indexPressed != 14{
-            if indexPressed == 13 {
+        if (indexPressed + 1)%4 != 0 && indexPressed != 14{ //Nao + - / *
+            if indexPressed == 13 { //.
                 integerNum = 1
-                totalText = lastTotal
-                calculationText = lastTotal
+                println(calculating)
+                if calculating == "0" && !oneDot {
+                    totalText = lastTotal + "."
+                    calculationText += "."
+                }
+                if calculating != "0" && !oneDot {
+                    //totalText = lastTotal + "."
+                    calculationText += "."
+                }
+                println("TotalText: \(totalText)")
+
+                
                 //calculating = "0"
+                oneDot = true
             } else if calculating == "0"{
+                println("NUMERO")
+                oneOp = false
                 var total = "0"
                 if integerNum == 0 {
                     if lastTotal == "0" {
-                        total = keyPressed + ".00"
+                        total = keyPressed
                     } else {
-                        total = getNumberWhithoutDot(lastTotal) + keyPressed + ".00"
+                        total = getNumberWhithoutDot(lastTotal) + keyPressed
                     }
                     totalText = total
-                    calculationText = total + " "
+                    calculationText = total
                     println("Pressed \(keyPressed) at \(indexPressed)")
                 } else if integerNum == 1{
                     integerNum = 2
-                    total = getNumberWhithoutDot(lastTotal) + "." + keyPressed + "0"
+                    total = lastTotal + keyPressed
                     totalText = total
-                    calculationText = total + " "
+                    calculationText = total
                     println("PRIMEIRO DECIMAL")
                 }
                 else if integerNum == 2{
                     
-                    total = lastTotal.substringToIndex(lastTotal.endIndex.predecessor()) + keyPressed
+                    total = lastTotal + keyPressed
                     totalText = total
-                    calculationText = total + " "
+                    calculationText = total
                     println("SEGUNDO DECIMAL")
                     integerNum = 3
                 }
             } else {
-                
-                var firstNum : Float = (lastTotal as NSString).floatValue
+                println("OP 1")
+                oneOp = false
+                /*var firstNum : Float = (lastTotal as NSString).floatValue
                 var secondNum : Float = 0.00
                 if calculator != 0.00 {
                     secondNum  = ("\(Int(calculator))" + keyPressed + ".00" as NSString).floatValue
                 } else {
                     secondNum  = (keyPressed + ".00" as NSString).floatValue
                 }
-                calculator = secondNum
-                println("Calculando \(firstNum) \(secondNum)")
+                calculator = secondNum*/
+                //println("Calculando \(firstNum) \(secondNum)")
                 //var sum = calculateTotal(firstNum, n2: secondNum, type: calculating)
                 
                 //totalText = "\(sum)"
                 
                 //calculateTotal()
-                calculationText = calculatingString + " " + keyPressed + ".00 "
-                totalText =  "\(calculateTotal(calculationText))"
+                
+               /* var almostLast =  advance(calculationText.endIndex, -2)
+                println(calculationText[almostLast])
+                if calculationText[almostLast] == "0" {
+                    println("NAO CALCULANDO SO ADICIONANDO")
+                    calculationText = calculationText + keyPressed
+                    println("AKI >>> \(calculationText)")
+                    totalText =  "\(calculateTotal(calculationText))"
+                    
+                } else {*/
+                    calculationText = calculationText + keyPressed
+                    println("AKI >>> \(calculationText)")
+                    totalText =  "\(calculateTotal(calculationText))"
+                    //calculating = "0"
+                //}
+                
+                
                 
                 //calculating = "0"
             }
             
         } else {
-            totalText = lastTotal
-            calculating = keyPressed
-            calculationText =  calculatingString  + keyPressed
+            println("OP 2")
             
-            println("others")
+            
+            //println("ELSE DO ADICIONAR NUMERO \(lastTotal) e \(keyPressed)")
+            if !oneOp {
+                totalText = lastTotal
+                calculating = keyPressed
+                calculationText =  calculationText  + keyPressed
+            }
+            oneOp = true
+            oneDot = false
+            //println("others")
         }
         return (totalText,calculationText)
     }
@@ -132,19 +170,95 @@ class Model {
         return hasPreference
     }
     
+    func isNum(c:Character) -> Bool{
+        if c == "0" || c == "1" || c == "2" || c == "3" || c == "4" || c == "5" || c == "6" || c == "7" || c == "8" || c == "9" || c == "."{
+            return true
+        } else {
+            return false
+        }
+    }
+    func isOp(c:Character) -> Bool{
+        if c == "+" || c == "-" || c == "/" || c == "x" {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func getReadableString(str:String) -> String {
+        var newStr = ""
+        for s in str {
+            if isOp(s) {
+                newStr += " " + "\(s)" + " "
+            }
+            else {
+                newStr += "\(s)"
+            }
+        }
+        return newStr
+    }
+    
+    func getUsualTotal(total:String) -> String {
+        var newTotal : String = ""
+        var twoStepsForward : Int = 0
+        for t in total {
+            
+            if twoStepsForward == 1 {
+                newTotal += "\(t)"
+                twoStepsForward = 2
+            } else if twoStepsForward == 2 {
+                newTotal += "\(t)"
+                twoStepsForward = 3
+            }
+            if t == "." {
+                newTotal += "\(t)"
+                twoStepsForward = 1
+            }
+            if twoStepsForward == 0 {
+                newTotal += "\(t)"
+            }
+        }
+        return newTotal
+    }
+    
     func calculateTotal(str:String) -> Float {
-        //var str = "6.00 / 3.00 - 18.00 "
+        //var str = "6.00 / 3.00 - 18.00"
         println("STR ==== " + str)
         var n : [Float] = []
         var o : [String] = []
-        var num : String = ""
-        var numOrOp = 0
-        for s in str {
+        var tempChar : String = ""
+        var op : String = ""
+        var numOrOp : Int // 0 for num 1 for op
+        numOrOp = 0
+        var strLength = count(str)
+        var cnt = 0
+        for currentChar in str {
+            cnt++
             // if isNum(s){
-            if s != " " {
-                num = num + "\(s)"
+            if numOrOp == 0 && isNum(currentChar){
+                tempChar = tempChar + "\(currentChar)"
             }
+            if numOrOp == 0 && isOp(currentChar) {
+                var floatNum : Float = (tempChar as NSString).floatValue
+                n.append(floatNum)
+                tempChar = "\(currentChar)"
+                numOrOp = 1
+            }
+            if numOrOp == 1 && isNum(currentChar){
+                o.append(tempChar)
+                numOrOp = 0
+                tempChar = "\(currentChar)"
+            }
+            
+            if cnt == strLength{
+                var floatNum : Float = (tempChar as NSString).floatValue
+                n.append(floatNum)
+                tempChar = "\(currentChar)"
+                numOrOp = 1
+            }
+            
             //}
+/*
             if s == " " {
                 if numOrOp == 0 {
                     var floatNum : Float = (num as NSString).floatValue
@@ -156,7 +270,7 @@ class Model {
                     numOrOp = 0
                     num = ""
                 }
-            }
+            }*/
             
         }
         println(n)

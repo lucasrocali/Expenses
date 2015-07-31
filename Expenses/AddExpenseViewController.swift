@@ -165,7 +165,13 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             self.cvCategory.reloadData()
         } else {
             println("Ihuu")
-            (lblTotal.text!,lblCalculation.text!) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!,calculatingString:lblCalculation.text!)
+            var unreadableString : String = ""
+            var unusualTotal : String = ""
+            (unusualTotal,unreadableString) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+            lblCalculation.text! = model.getReadableString(unreadableString)
+            //lblTotal.text! = unusualTotal
+            println("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
+            lblTotal.text! = model.getUsualTotal(unusualTotal)
         }
     }
     
