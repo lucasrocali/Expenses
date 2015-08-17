@@ -43,6 +43,15 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
+    @IBAction func saveExpense(sender: AnyObject) {
+        println("Save expense\n category : \(model.selectedIndexCat) \n subcategory \(model.selectedIndexSubCat) \n Total \(lblTotal.text!)")
+        
+        model.saveExpense((lblTotal.text! as NSString).floatValue)
+    }
+    @IBAction func swpRight(sender: AnyObject) {
+        println("Swipe Right")
+    }
+    @IBOutlet var swpRight: UISwipeGestureRecognizer!
     @IBOutlet var lblCalculation: UILabel!
     @IBOutlet var lblTotal: UILabel!
     @IBOutlet var cvCalculator: UICollectionView!
@@ -52,10 +61,14 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     var screenHeight: CGFloat!
     let tapRec = UITapGestureRecognizer()
     
-        @IBAction func backToCategories(sender: AnyObject) {
+    @IBAction func expenseIncomeAction(sender: AnyObject) {
+        println("Expense/Income")
+    }
+    @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
         model.category = true
-        model.selectedIndex = nil
+        model.selectedIndexCat = nil
+        model.selectedIndexSubCat = nil
         self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
@@ -88,7 +101,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         lblTotal.text = "0"
         lblCalculation.text = "0"
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -117,7 +130,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.backgroundColor = UIColor.grayColor()
-            if model.selectedIndex == indexPath.row && !model.category {
+            if model.selectedIndexSubCat == indexPath.row && !model.category {
                 cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             }
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
@@ -134,11 +147,18 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.backgroundColor = UIColor.whiteColor()
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
-            cell.backgroundColor = UIColor.whiteColor()
+            
+            if indexPath.row % 5 == 0 {     //non calculator part
+                cell.backgroundColor = UIColor.grayColor()
+            } else {    //calculator part
+                cell.backgroundColor = UIColor.whiteColor()
+            }
+            
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
             cell.lblNumber.text = model.calculatorNumbers[indexPath.row]
+            //cell.lblNumber.text = String(indexPath.row)   //get index of collection view calculator
             return cell
         }
         
@@ -147,8 +167,8 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func tappedCaculator(collectionView: UICollectionView, indexPath: NSIndexPath) {
         
         if collectionView === self.cvCategory {
-            if model.selectedIndex != nil {
-                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndex!, inSection: 0)
+            if model.selectedIndexSubCat != nil {
+                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndexSubCat!, inSection: 0)
                 var celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
                 if !model.category {
                     celll!.backgroundColor = UIColor.clearColor()
@@ -159,19 +179,27 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             var cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             if !model.category {
-                model.selectedIndex = indexPath.row
+                model.selectedIndexSubCat = indexPath.row
+            } else {
+                model.selectedIndexCat = indexPath.row
             }
             model.category = false
             self.cvCategory.reloadData()
         } else {
-            println("Ihuu")
-            var unreadableString : String = ""
-            var unusualTotal : String = ""
-            (unusualTotal,unreadableString) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
-            lblCalculation.text! = model.getReadableString(unreadableString)
-            //lblTotal.text! = unusualTotal
-            println("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
-            lblTotal.text! = model.getUsualTotal(unusualTotal)
+            
+            if indexPath.row % 5 == 0 { //Its not part of calculator
+                println("Non calculator part")
+                
+            } else {    //calculator part
+                println("Calculator part")
+                var unreadableString : String = ""
+                var unusualTotal : String = ""
+                (unusualTotal,unreadableString) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+                lblCalculation.text! = model.getReadableString(unreadableString)
+                //lblTotal.text! = unusualTotal
+                println("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
+                lblTotal.text! = model.getUsualTotal(unusualTotal)
+            }
         }
     }
     
@@ -191,9 +219,9 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout:UICollectionViewLayout!,sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
         if collectionView === self.cvCategory {
-            return CGSize(width: screenWidth/6, height: screenWidth/6)
+            return CGSize(width: screenWidth/3, height: screenWidth/6)
         }
-        return CGSize(width: screenWidth/4, height: 250/4)
+        return CGSize(width: screenWidth/5, height: 250/4)
     }
     
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {

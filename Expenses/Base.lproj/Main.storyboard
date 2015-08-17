@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZkE-aw-Ulv">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ZkE-aw-Ulv">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -46,7 +46,6 @@
         <!--Add Expense View Controller-->
         <scene sceneID="0mi-eV-Lrn">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Ebh-yC-9wK" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="PhD-43-VSL" userLabel="Add Expense View Controller" customClass="AddExpenseViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4A6-xr-fIC"/>
@@ -119,12 +118,24 @@
                                                 <action selector="addCategorieOrSubCategorie:" destination="PhD-43-VSL" eventType="touchUpInside" id="jDC-fB-Y7Y"/>
                                             </connections>
                                         </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYK-Qm-Fzx">
+                                            <rect key="frame" x="243" y="10" width="115" height="30"/>
+                                            <state key="normal" title="Expense/Income">
+                                                <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="expenseIncomeAction:" destination="PhD-43-VSL" eventType="touchUpInside" id="lsI-ac-va4"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Tzf-ez-IOK" firstAttribute="trailing" secondItem="Nfv-Av-azx" secondAttribute="trailingMargin" id="5JT-e3-7ev"/>
                                         <constraint firstItem="cSR-PC-Bdt" firstAttribute="top" secondItem="Nfv-Av-azx" secondAttribute="topMargin" id="LK8-pn-qsz"/>
                                         <constraint firstItem="Tzf-ez-IOK" firstAttribute="top" secondItem="Nfv-Av-azx" secondAttribute="topMargin" id="XJV-wJ-ilL"/>
+                                        <constraint firstAttribute="centerX" secondItem="fYK-Qm-Fzx" secondAttribute="centerX" id="diQ-Qb-1N1"/>
                                         <constraint firstItem="cSR-PC-Bdt" firstAttribute="leading" secondItem="Nfv-Av-azx" secondAttribute="leadingMargin" id="it8-U8-e8j"/>
+                                        <constraint firstAttribute="centerY" secondItem="fYK-Qm-Fzx" secondAttribute="centerY" id="xBG-os-ZR9"/>
                                     </constraints>
                                 </collectionReusableView>
                                 <variation key="default">
@@ -176,7 +187,6 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="cvCalculatorHeader" reuseIdentifier="cvCalculatorHeader" id="rgo-hm-2GM">
-                                    <rect key="frame" x="0.0" y="0.0" width="600" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </collectionReusableView>
                                 <connections>
@@ -186,12 +196,16 @@
                             </collectionView>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jyV-lZ-Get">
                                 <rect key="frame" x="0.0" y="64" width="584" height="70"/>
+                                <gestureRecognizers/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="Fhf-SX-0XU"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="csq-aZ-elc" appends="YES" id="THL-So-eud"/>
+                                </connections>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" 0 + 0 / 0 =" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2sG-ke-Dn9">
                                 <rect key="frame" x="0.0" y="117" width="584" height="17"/>
@@ -223,14 +237,27 @@
                             </mask>
                         </variation>
                     </view>
-                    <navigationItem key="navigationItem" id="ns6-TV-4ak"/>
+                    <navigationItem key="navigationItem" id="ns6-TV-4ak">
+                        <barButtonItem key="rightBarButtonItem" title="Done" id="tns-pt-Qqa">
+                            <connections>
+                                <action selector="saveExpense:" destination="PhD-43-VSL" id="NiU-tL-Lv3"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="cvCalculator" destination="ZzE-d4-ACi" id="Spx-D1-OlI"/>
                         <outlet property="cvCategory" destination="r4y-xH-7hX" id="ffV-ie-kLh"/>
                         <outlet property="lblCalculation" destination="2sG-ke-Dn9" id="ui4-kd-nVv"/>
                         <outlet property="lblTotal" destination="jyV-lZ-Get" id="VX6-sP-Fs2"/>
+                        <outlet property="swpRight" destination="csq-aZ-elc" id="Hee-EQ-lj0"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ebh-yC-9wK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <swipeGestureRecognizer direction="right" id="csq-aZ-elc">
+                    <connections>
+                        <action selector="swpRight:" destination="PhD-43-VSL" id="MaW-47-8Bt"/>
+                    </connections>
+                </swipeGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1817" y="1076"/>
         </scene>
@@ -249,6 +276,33 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EFB-uo-gOg">
                                 <rect key="frame" x="0.0" y="134" width="600" height="417"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="expenseCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="expenseCell" textLabel="v0l-nj-O9a" detailTextLabel="dFk-Xy-8aT" style="IBUITableViewCellStyleValue2" id="usT-SP-rtD">
+                                        <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="usT-SP-rtD" id="kh0-GG-LS1">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="v0l-nj-O9a">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dFk-Xy-8aT">
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="1hX-mY-XmA" id="awT-4q-hRS"/>
+                                    <outlet property="delegate" destination="1hX-mY-XmA" id="ltf-7m-lmB"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
@@ -266,6 +320,9 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="8TZ-Dt-fgV"/>
+                    <connections>
+                        <outlet property="expensesTable" destination="EFB-uo-gOg" id="6Gr-RZ-xzw"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YQe-FK-wt4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

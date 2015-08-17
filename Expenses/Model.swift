@@ -7,6 +7,9 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
+
 class Model {
     
     //Singleton
@@ -23,19 +26,66 @@ class Model {
     var integerNum = 0
     var calculating = "0"
     var calculator : Float = 0.00
-    var selectedIndex: Int?
+    var selectedIndexCat : Int?
+    var selectedIndexSubCat : Int?
     var category = true
-    var calculatorNumbers = ["7","8","9","/","4","5","6","x","1","2","3","-","0",".","=","+"]
-    var data = ["a","b","c","d","e","f","g","h","i"]
+    var calculatorNumbers =
+    ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
+    //["1"]
+    var data = ["General","House","Food","Groceries","Payments","Transport","Utilities","Car","Personal"]
     var subdata = ["sa","sb","sc","sd","se"]
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
     
+    //let appDelegate : AppDelegate
+    
+    var managedContext : NSManagedObjectContext {
+        return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
+    }
+    
+    var expenses : [String] = []
+    
     func resetInput() {
         integerNum = 0
         calculating = "0"
         calculator = 0.00
+        oneDot = false
+        oneOp = false
+    }
+    
+    init() {
+        println("criando classe")
+        //appDelegate = UIApplication().delegate as! AppDelegate
+        //managedContext = appDelegate.managedObjectContext!
+    
+    }
+    func fetchExpenses() {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Expense")
+        var error : NSError?
+        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
+        if let results = fetchResults {
+            println(results)
+            var value : Float
+            for result in results {
+                value = result.valueForKey("value") as! Float
+                expenses.append("\(value)")
+            }
+        } else {
+            println("Could not fetch \(error)")
+        }
+    }
+    
+    func saveExpense(value: Float) {
+        let entity = NSEntityDescription.entityForName("Expense", inManagedObjectContext: managedContext)
+        let expense = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
+        expense.setValue(value, forKey: "value")
+        var error : NSError?
+        if !managedContext.save(&error) {
+            println("Could not save \(error)")
+        }
+        expenses.append("\(value)")
     }
     
     func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
@@ -44,99 +94,55 @@ class Model {
         if keyPressed == "=" {
             totalText = lastTotal
             calculationText = lastTotal
-            //integerNum = 0
             calculating = "0"
-            calculator = (lastTotal as NSString).floatValue
             return (totalText,calculationText)
         }
-        if (indexPressed + 1)%4 != 0 && indexPressed != 14{ //Nao + - / *
-            if indexPressed == 13 { //.
-                integerNum = 1
-                println(calculating)
-                if calculating == "0" && !oneDot {
-                    totalText = lastTotal + "."
+        if (indexPressed + 1)%5 != 0 && indexPressed != 17{ //Number or point
+            if indexPressed == 17 {         //.
+                println("DOT")
+                integerNum = 1              //Its a point
+                if !oneDot {                //Its a first dot
+                    if calculating == "0" {
+                         totalText = lastTotal + "."
+                    }
                     calculationText += "."
                 }
-                if calculating != "0" && !oneDot {
-                    //totalText = lastTotal + "."
-                    calculationText += "."
-                }
-                println("TotalText: \(totalText)")
-
-                
-                //calculating = "0"
                 oneDot = true
-            } else if calculating == "0"{
-                println("NUMERO")
+            } else if calculating == "0"{       //NUMBER
                 oneOp = false
                 var total = "0"
                 if integerNum == 0 {
                     if lastTotal == "0" {
                         total = keyPressed
                     } else {
-                        total = getNumberWhithoutDot(lastTotal) + keyPressed
+                        total = lastTotal + keyPressed
                     }
                     totalText = total
                     calculationText = total
-                    println("Pressed \(keyPressed) at \(indexPressed)")
+                    //println("Pressed \(keyPressed) at \(indexPressed)")
                 } else if integerNum == 1{
                     integerNum = 2
                     total = lastTotal + keyPressed
                     totalText = total
                     calculationText = total
-                    println("PRIMEIRO DECIMAL")
+                    //println("PRIMEIRO DECIMAL")
                 }
                 else if integerNum == 2{
-                    
                     total = lastTotal + keyPressed
                     totalText = total
                     calculationText = total
-                    println("SEGUNDO DECIMAL")
+                    //println("SEGUNDO DECIMAL")
                     integerNum = 3
                 }
-            } else {
-                println("OP 1")
+            } else {        //OPERATION
+                //println("OP 1")
                 oneOp = false
-                /*var firstNum : Float = (lastTotal as NSString).floatValue
-                var secondNum : Float = 0.00
-                if calculator != 0.00 {
-                    secondNum  = ("\(Int(calculator))" + keyPressed + ".00" as NSString).floatValue
-                } else {
-                    secondNum  = (keyPressed + ".00" as NSString).floatValue
-                }
-                calculator = secondNum*/
-                //println("Calculando \(firstNum) \(secondNum)")
-                //var sum = calculateTotal(firstNum, n2: secondNum, type: calculating)
-                
-                //totalText = "\(sum)"
-                
-                //calculateTotal()
-                
-               /* var almostLast =  advance(calculationText.endIndex, -2)
-                println(calculationText[almostLast])
-                if calculationText[almostLast] == "0" {
-                    println("NAO CALCULANDO SO ADICIONANDO")
-                    calculationText = calculationText + keyPressed
-                    println("AKI >>> \(calculationText)")
-                    totalText =  "\(calculateTotal(calculationText))"
-                    
-                } else {*/
-                    calculationText = calculationText + keyPressed
-                    println("AKI >>> \(calculationText)")
-                    totalText =  "\(calculateTotal(calculationText))"
-                    //calculating = "0"
-                //}
-                
-                
-                
-                //calculating = "0"
+                calculationText = calculationText + keyPressed
+                println("AKI >>> \(calculationText)")
+                totalText =  "\(calculateTotal(calculationText))"
             }
             
-        } else {
-            println("OP 2")
-            
-            
-            //println("ELSE DO ADICIONAR NUMERO \(lastTotal) e \(keyPressed)")
+        } else {            //OPERATION
             if !oneOp {
                 totalText = lastTotal
                 calculating = keyPressed
@@ -144,21 +150,11 @@ class Model {
             }
             oneOp = true
             oneDot = false
-            //println("others")
-        }
+       }
         return (totalText,calculationText)
     }
     
-    func getNumberWhithoutDot(str: String) -> String {
-        var t : String = ""
-        for s in str{
-            if s == "."{
-                break
-            }
-            t = t + "\(s)"
-        }
-        return t
-    }
+    
     
     func keepPreference (ops:[String]) -> Bool {
         var hasPreference = false

@@ -8,8 +8,11 @@
 
 import UIKit
 
-class ExpensesViewController: UIViewController {
+class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+    
+    var model = Model.sharedInstance
 
+    @IBOutlet var expensesTable: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
@@ -21,6 +24,33 @@ class ExpensesViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        self.view.endEditing(true)
+        println("selected \(indexPath.row)")
+        expensesTable.reloadData()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        expensesTable.reloadData()
+    }
+    
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return model.expenses.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        
+        var cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
+            as! UITableViewCell
+        
+        cell.textLabel!.text = model.expenses[indexPath.row]
+
+        return cell
+    }
+
 
     /*
     // MARK: - Navigation
