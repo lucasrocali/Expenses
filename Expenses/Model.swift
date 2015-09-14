@@ -125,6 +125,9 @@ class Model {
         }
         //category.subcategories = tempsubcategories
         categories.append(category)
+        var error : NSError?
+        managedContext.save(&error)
+        
     }
     
     /*
@@ -194,6 +197,9 @@ class Model {
         expense.subcategory = subcategories[selectedIndexSubCat!]
         //expenses.append(expense)
         fetchExpenses()
+        var error : NSError?
+        managedContext.save(&error)
+        //CORE DATA NOT SAVING
     }
     
     func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
