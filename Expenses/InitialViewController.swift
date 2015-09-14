@@ -16,7 +16,6 @@ class InitialViewController: UITabBarController,PFLogInViewControllerDelegate, P
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        model.fetchExpenses()
         
     }
     

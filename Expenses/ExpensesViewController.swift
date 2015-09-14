@@ -32,6 +32,7 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
     }
     
     override func viewDidAppear(animated: Bool) {
+        model.fetchExpenses()
         expensesTable.reloadData()
     }
     
@@ -46,7 +47,7 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
         var cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
             as! UITableViewCell
         
-        cell.textLabel!.text = model.expenses[indexPath.row]
+        cell.textLabel!.text = "\(model.expenses[indexPath.row].value)"
 
         return cell
     }

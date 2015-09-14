@@ -19,6 +19,7 @@ class Model {
     class var sharedInstance: Model {
         if (Static.instance == nil) {
             Static.instance = Model()
+           
         }
         return Static.instance!
     }
@@ -32,8 +33,19 @@ class Model {
     var calculatorNumbers =
     ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
     //["1"]
-    var data = ["General","House","Food","Groceries","Payments","Transport","Utilities","Car","Personal"]
-    var subdata = ["sa","sb","sc","sd","se"]
+    var defaultData = [
+        "General":["General1","General2","General3"],
+        "House":["House1","House2","House3"],
+        "Food":["Food1","Food2","Food3"],
+        "Groceries":["Groceries1","Groceries2","Groceries3"],
+        "Payments":["Payments1","Payments2","Payments3"],
+        "Transport":["Transport1","Transport2","Transport3"],
+        "Utilities":["Utilities1","Utilities2","Utilities3"],
+        "Car":["Car1","Car2","Car3"],
+        "Personal":["Personal1","Personal2","Personal3"]
+    ]
+    var categories : [Category] = []
+    var subcategories : [SubCategory] = []
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
@@ -44,7 +56,7 @@ class Model {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
     }
     
-    var expenses : [String] = []
+    var expenses : [Expense] = []
     
     func resetInput() {
         integerNum = 0
@@ -58,19 +70,117 @@ class Model {
         println("criando classe")
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
-    
     }
-    func fetchExpenses() {
+
+    func createDefaultCategories() {
+        for (data,subdata) in defaultData {
+            saveCategory(data, subcategories: subdata)
+            
+        }
         
+        //self.fetchCategories()
+    }
+    /*
+    func fetchCategories(){
+        let fetchRequest = NSFetchRequest(entityName: "Category")
+        var error : NSError?
+        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [Category]
+        if let results = fetchResults {
+            println(results)
+            for result in results {
+                categories.append(result)
+            }
+        } else {
+            println("Could not fetch \(error)")
+        }
+    }
+*/
+    /*
+    func fetchSubCategories() {
+        var belongs : Category = categories[selectedIndexCat!]
+        print(selectedIndexCat)
+        print(belongs)
+        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
+        let predicate = NSPredicate(format: "belongs == %@",belongs)
+        fetchRequest.predicate = predicate
+        var error : NSError?
+        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [SubCategory]
+        //subCategories.removeAll(keepCapacity: false)
+        if let results = fetchResults {
+            println(results)
+            for result in results {
+                //subCategories.append(result)
+            }
+        } else {
+            println("Could not fetch \(error)")
+        }
+
+    }
+    */
+    func saveCategory(name:String,subcategories:[String]) {
+        let category : Category =  NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: managedContext) as! Category
+        category.name = name
+        for subcategory in subcategories {
+            saveSubCategory(category, name: subcategory)
+        }
+        //category.subcategories = tempsubcategories
+        categories.append(category)
+    }
+    
+    /*
+    func saveSubCategories(belongs:String,subCategories:[String]) {
+        for category in subCategories {
+            saveSubCategory(belongs, name: category)
+        }
+    }
+    */
+    func saveSubCategory(belongs:Category,name:String) {
+        let subCategory : SubCategory =  NSEntityDescription.insertNewObjectForEntityForName("SubCategory", inManagedObjectContext: managedContext) as! SubCategory
+        subCategory.belongs = belongs
+        subCategory.name = name
+    }
+
+    func getCategory(name:String) -> Category? {
+        for category in categories {
+            if category.name == name {
+                return category
+            }
+        }
+        return nil
+        
+    }
+    
+    func getSubCategories() {
+        subcategories.removeAll(keepCapacity: false)
+        var belongs : Category = categories[selectedIndexCat!]
+        print(selectedIndexCat)
+        print(belongs)
+        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
+        let predicate = NSPredicate(format: "belongs == %@",belongs)
+        fetchRequest.predicate = predicate
+        var error : NSError?
+        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [SubCategory]
+        //subCategories.removeAll(keepCapacity: false)
+        if let results = fetchResults {
+            println(results)
+            for result in results {
+                subcategories.append(result)
+            }
+        } else {
+            println("Could not fetch \(error)")
+        }
+    }
+    
+    
+    func fetchExpenses() {
+       
         let fetchRequest = NSFetchRequest(entityName: "Expense")
         var error : NSError?
         let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
         if let results = fetchResults {
-            println(results)
-            var value : Float
+            expenses.removeAll(keepCapacity: false)
             for result in results {
-                value = result.valueForKey("value") as! Float
-                expenses.append("\(value)")
+                expenses.append(result as! Expense)
             }
         } else {
             println("Could not fetch \(error)")
@@ -78,14 +188,12 @@ class Model {
     }
     
     func saveExpense(value: Float) {
-        let entity = NSEntityDescription.entityForName("Expense", inManagedObjectContext: managedContext)
-        let expense = NSManagedObject(entity: entity!, insertIntoManagedObjectContext: managedContext)
-        expense.setValue(value, forKey: "value")
-        var error : NSError?
-        if !managedContext.save(&error) {
-            println("Could not save \(error)")
-        }
-        expenses.append("\(value)")
+        let expense : Expense =  NSEntityDescription.insertNewObjectForEntityForName("Expense", inManagedObjectContext: managedContext) as! Expense
+
+        expense.value = value
+        expense.subcategory = subcategories[selectedIndexSubCat!]
+        //expenses.append(expense)
+        fetchExpenses()
     }
     
     func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {

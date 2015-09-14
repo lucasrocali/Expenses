@@ -32,9 +32,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             let textField = alertView.textFieldAtIndex(0)
             print(textField!.text)
             if model.category {
-                model.data.append(textField!.text)
+               // model.categories.append(textField!.text)
+                //SAVE CATEGORY .....
             } else {
-                model.subdata.append(textField!.text)
+                //model.subCategories.append(textField!.text)
             }
             cvCategory.reloadData()
             
@@ -44,7 +45,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     @IBAction func saveExpense(sender: AnyObject) {
-        println("Save expense\n category : \(model.selectedIndexCat) \n subcategory \(model.selectedIndexSubCat) \n Total \(lblTotal.text!)")
+        println("Save expense\n category : \(model.selectedIndexCat!) \n subcategory \(model.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
         
         model.saveExpense((lblTotal.text! as NSString).floatValue)
     }
@@ -93,6 +94,8 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         
         tapRec.addTarget(self, action: "labelTapped")
         lblTotal.addGestureRecognizer(tapRec)
+        
+        model.createDefaultCategories()
     }
     
     func labelTapped(){
@@ -113,9 +116,9 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         if collectionView === self.cvCategory {
             if model.category {
                 
-                count = model.data.count
+                count = model.categories.count
             } else {
-                count = model.subdata.count
+                count = model.subcategories.count
             }
             return count
         }
@@ -137,9 +140,9 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
             if model.category{
-                cell.lblName.text = model.data[indexPath.row]
+                cell.lblName.text = model.categories[indexPath.row].name
             } else {
-                cell.lblName.text = model.subdata[indexPath.row]
+                cell.lblName.text = model.subcategories[indexPath.row].name
             }
             return cell
         } else {
@@ -182,8 +185,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
                 model.selectedIndexSubCat = indexPath.row
             } else {
                 model.selectedIndexCat = indexPath.row
+                model.getSubCategories()
             }
             model.category = false
+            
             self.cvCategory.reloadData()
         } else {
             

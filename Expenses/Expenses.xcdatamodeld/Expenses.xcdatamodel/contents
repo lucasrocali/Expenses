@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="Category" syncable="YES">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="Category" representedClassName="Expenses.Category" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Expense" syncable="YES">
-        <attribute name="category" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="subcategory" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+    <entity name="Expense" representedClassName="Expenses.Expense" syncable="YES">
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="subcategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SubCategory" syncable="YES"/>
     </entity>
-    <entity name="SubCategory" syncable="YES"/>
+    <entity name="SubCategory" representedClassName="Expenses.SubCategory" syncable="YES">
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="belongs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Category" positionX="-63" positionY="-18" width="128" height="60"/>
-        <element name="Expense" positionX="187" positionY="-243" width="128" height="90"/>
-        <element name="SubCategory" positionX="160" positionY="-18" width="128" height="45"/>
+        <element name="Category" positionX="-38" positionY="-96" width="128" height="58"/>
+        <element name="Expense" positionX="-218" positionY="-241" width="128" height="73"/>
+        <element name="SubCategory" positionX="135" positionY="-16" width="128" height="73"/>
     </elements>
 </model>
