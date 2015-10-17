@@ -27,22 +27,26 @@ class DefaultInfo : InfoManager {
         "Stocks":["APPL","BBDC","GGLE"]
     ]
     
-    func getCategories() -> [Category] {
+    func getCategories(type:String) -> [Category] {
         let database : Database = Database()
-        for (data,subdata) in defaultExpenses {
-            database.saveCategoryToDB("Expense",name:data, subcategories: subdata)
-              
+        if (type == "Expense"){
+            for (data,subdata) in defaultExpenses {
+                database.saveCategoryToDB("Expense",name:data, subcategories: subdata)
+                
+            }
         }
-        for (data,subdata) in defaultIncomes {
-            database.saveCategoryToDB("Income",name:data, subcategories: subdata)
-            
+        if (type == "Income"){
+            for (data,subdata) in defaultIncomes {
+                database.saveCategoryToDB("Income",name:data, subcategories: subdata)
+                
+            }
         }
         print("Created default model, lets fetch from DB")
-        return database.getCategories()
+        return database.getCategories(type)
     }
     
     func getSubCategories(belongs: Category) -> [SubCategory] {
-        getCategories()
+        //getCategories()
         let database : Database = Database()
         print("Created default model, lets fetch from DB")
         return database.getSubCategories(belongs)

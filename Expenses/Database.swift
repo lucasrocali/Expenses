@@ -16,9 +16,11 @@ class Database : InfoManager {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
     }
     
-    func getCategories() -> [Category] {
+    func getCategories(type:String) -> [Category] {
         let fetchRequest = NSFetchRequest(entityName: "Category")
-        let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [Category]
+        let predicate = NSPredicate(format: "type == %@",type)
+        fetchRequest.predicate = predicate
+         let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [Category]
         var tempCategories :[Category] = []
         if let results = fetchResults {
             if (results.count > 0){
@@ -30,11 +32,11 @@ class Database : InfoManager {
                 return tempCategories
             } else {
                 print("Could not fetch categories from DB lets take from Default Model")
-                return (nextInfo?.getCategories())!
+                return (nextInfo?.getCategories(type))!
             }
         } else {
             print("Could not fetch categories from DB lets take from Default Model")
-            return (nextInfo?.getCategories())!
+            return (nextInfo?.getCategories(type))!
         }
     }
     

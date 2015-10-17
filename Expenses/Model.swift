@@ -36,18 +36,17 @@ class Model {
         return Static.instance!
     }
     
-    var information : InfoManager = Database()
+   // var information : InfoManager = Database()
     
     var integerNum = 0
     var calculating = "0"
     var calculator : Float = 0.00
-    var selectedIndexCat : Int?
-    var selectedIndexSubCat : Int?
-    var category = true
-    var calculatorNumbers =
-    ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
-    var categories : [Category] = []
-    var subcategories : [SubCategory] = []
+    //var selectedIndexCat : Int?
+    //var selectedIndexSubCat : Int?
+   // var category = true
+    var calculatorNumbers = ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
+    //var categories : [Category] = []
+    //var subcategories : [SubCategory] = []
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
@@ -67,25 +66,9 @@ class Model {
     
     init() {
         print("criando classe")
-        categories = information.getCategories()
+        //categories = information.getCategories()
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
-    }
-    func getCategories(){
-        categories = database.getCategories()
-    }
-    func saveCategory(name:String){
-        print("Save category \(name)")
-        database.saveCategoryToDB("Expense",name:name, subcategories: [])
-    }
-    func saveSubCategory(name:String){
-        print("Save subcatecory \(name) in \(categories[selectedIndexCat!].name)")
-        database.saveSubCategoryToDB(categories[selectedIndexCat!],name:name)
-    }
-    func getSubCategories(){
-        print("before \(subcategories.count)")
-        subcategories = database.getSubCategories(categories[selectedIndexCat!])
-         print("after \(subcategories.count)")
     }
     func getExpenses(){
         expenses = database.fetchExpenses()
@@ -93,10 +76,10 @@ class Model {
     func saveExpense(value:Float){
         database.saveExpenseToDB(value)
     }
-    /*
+        /*
     func getSelectedCategory() -> Category{
         return categories[selectedIndexCat!]
-    }*/
+    }*//*
     func getCategory(name:String) -> Category? {
         for category in categories {
             if category.name == name {
@@ -105,7 +88,7 @@ class Model {
         }
         return nil
         
-    }
+    }*/
     
     
     
