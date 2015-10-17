@@ -11,13 +11,14 @@ import UIKit
 class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var model = Model.sharedInstance
+    var balanceType = BalanceType()
     
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         let alert = UIAlertView()
         if model.category {
             alert.title = "Enter new category"
         } else {
-            alert.title = "Enter new sub category"
+            alert.title = "Enter new subcategory"
         }
         alert.addButtonWithTitle("Add")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
@@ -30,11 +31,16 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         ////println("\(buttonTitle) pressed")
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
-            print(textField!.text, terminator: "")
+            print("ADD"+textField!.text!, terminator: "")
             if model.category {
-               // model.categories.append(textField!.text)
+                model.saveCategory(textField!.text!)
+                model.getCategories()               // model.categories.append(textField!.text)
                 //SAVE CATEGORY .....
             } else {
+                model.saveSubCategory(textField!.text!)
+                model.getCategories()
+                model.getSubCategories()
+                //model.getSubCatecories()
                 //model.subCategories.append(textField!.text)
             }
             cvCategory.reloadData()
@@ -45,9 +51,11 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     @IBAction func saveExpense(sender: AnyObject) {
-        print("Save expense\n category : \(model.selectedIndexCat!) \n subcategory \(model.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
-        
-        model.saveExpense((lblTotal.text! as NSString).floatValue)
+        if (model.selectedIndexCat != nil && model.selectedIndexSubCat != nil) {
+            print("Save expense\n category : \(model.selectedIndexCat!) \n subcategory \(model.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
+            
+            model.saveExpense((lblTotal.text! as NSString).floatValue)
+        }
     }
     @IBAction func swpRight(sender: AnyObject) {
         print("Swipe Right")
@@ -95,7 +103,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         tapRec.addTarget(self, action: "labelTapped")
         lblTotal.addGestureRecognizer(tapRec)
         
-        model.getData()
+        //model.getData()
         //model.createDefaultCategories()
     }
     
@@ -168,7 +176,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         
     }
     
-    func tappedCaculator(collectionView: UICollectionView, indexPath: NSIndexPath) {
+    func tappedCollectionView(collectionView: UICollectionView, indexPath: NSIndexPath) {
         
         if collectionView === self.cvCategory {
             if model.selectedIndexSubCat != nil {
@@ -186,7 +194,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
                 model.selectedIndexSubCat = indexPath.row
             } else {
                 model.selectedIndexCat = indexPath.row
-                model.getSubCategories(model.categories[model.selectedIndexCat!])
+                model.getSubCategories()
             }
             model.category = false
             
@@ -211,7 +219,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         
-        tappedCaculator(collectionView,indexPath:indexPath)
+        tappedCollectionView(collectionView,indexPath:indexPath)
         
     }
     
@@ -220,7 +228,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
     {
-        tappedCaculator(collectionView,indexPath:indexPath)
+        tappedCollectionView(collectionView,indexPath:indexPath)
     }
     
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout:UICollectionViewLayout!,sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
@@ -233,10 +241,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         //println("ip = \(indexPath.item)")
         if collectionView === self.cvCategory {
-            let supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath) 
+            let supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath)
             return supplementaryView
         } else {
-            let supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath) 
+            let supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath)
             //supplementaryView.backgroundColor = UIColor.blueColor()
             return supplementaryView
         }

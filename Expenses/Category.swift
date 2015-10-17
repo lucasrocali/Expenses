@@ -11,6 +11,8 @@ import CoreData
 
 
 class Category: NSManagedObject {
+    @NSManaged var type : String
     @NSManaged var name : String
+    
     
 }

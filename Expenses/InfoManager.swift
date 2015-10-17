@@ -11,4 +11,5 @@ import Foundation
 protocol InfoManager {
     var nextInfo : InfoManager? {get set}
     func getCategories() -> [Category]
+    func getSubCategories(belongs:Category) -> [SubCategory]
 }

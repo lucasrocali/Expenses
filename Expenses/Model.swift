@@ -10,11 +10,10 @@ import Foundation
 import CoreData
 import UIKit
 /*
-
+NAME should be BALANCE
 To do: 
-Chain of responsability between database and model
-
-
+Chain of responsability between database and model DONE
+Create logic to manage expense/income
 
 
 
@@ -47,25 +46,12 @@ class Model {
     var category = true
     var calculatorNumbers =
     ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
-    //["1"]
-   /* var defaultData = [
-        "General":["General10","General2","General3"],
-        "House":["House1","House2","House3"],
-        "Food":["Food1","Food2","Food3"],
-        "Groceries":["Groceries1","Groceries2","Groceries3"],
-        "Payments":["Payments1","Payments2","Payments3"],
-        "Transport":["Transport1","Transport2","Transport3"],
-        "Utilities":["Utilities1","Utilities2","Utilities3"],
-        "Car":["Car1","Car2","Car3"],
-        "Personal":["Personal1","Personal2","Personal3"]
-    ]*/
     var categories : [Category] = []
     var subcategories : [SubCategory] = []
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
     //let appDelegate : AppDelegate
-    
     
     var expenses : [Expense] = []
     
@@ -85,12 +71,21 @@ class Model {
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
     }
-    /*
     func getCategories(){
         categories = database.getCategories()
-    }*/
-    func getSubCategories(belongs:Category){
-        subcategories = database.fetchSubCategories(belongs)
+    }
+    func saveCategory(name:String){
+        print("Save category \(name)")
+        database.saveCategoryToDB("Expense",name:name, subcategories: [])
+    }
+    func saveSubCategory(name:String){
+        print("Save subcatecory \(name) in \(categories[selectedIndexCat!].name)")
+        database.saveSubCategoryToDB(categories[selectedIndexCat!],name:name)
+    }
+    func getSubCategories(){
+        print("before \(subcategories.count)")
+        subcategories = database.getSubCategories(categories[selectedIndexCat!])
+         print("after \(subcategories.count)")
     }
     func getExpenses(){
         expenses = database.fetchExpenses()
@@ -98,67 +93,10 @@ class Model {
     func saveExpense(value:Float){
         database.saveExpenseToDB(value)
     }
-    func getData(){
-        
-    }
-
-    func getSubCatecories(){
-        
-    }
-    /*func createDefaultCategories() {
-        for (data,subdata) in defaultData {
-            saveCategory(data, subcategories: subdata)
-            
-        }
-        
-        //self.fetchCategories()
+    /*
+    func getSelectedCategory() -> Category{
+        return categories[selectedIndexCat!]
     }*/
-    /*
-    func fetchCategories(){
-        let fetchRequest = NSFetchRequest(entityName: "Category")
-        var error : NSError?
-        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [Category]
-        if let results = fetchResults {
-            println(results)
-            for result in results {
-                categories.append(result)
-            }
-        } else {
-            println("Could not fetch \(error)")
-        }
-    }
-*/
-    /*
-    func fetchSubCategories() {
-        var belongs : Category = categories[selectedIndexCat!]
-        print(selectedIndexCat)
-        print(belongs)
-        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
-        let predicate = NSPredicate(format: "belongs == %@",belongs)
-        fetchRequest.predicate = predicate
-        var error : NSError?
-        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [SubCategory]
-        //subCategories.removeAll(keepCapacity: false)
-        if let results = fetchResults {
-            println(results)
-            for result in results {
-                //subCategories.append(result)
-            }
-        } else {
-            println("Could not fetch \(error)")
-        }
-
-    }
-    */
-    
-    
-    /*
-    func saveSubCategories(belongs:String,subCategories:[String]) {
-        for category in subCategories {
-            saveSubCategory(belongs, name: category)
-        }
-    }
-    */
     func getCategory(name:String) -> Category? {
         for category in categories {
             if category.name == name {

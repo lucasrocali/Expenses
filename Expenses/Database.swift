@@ -22,7 +22,7 @@ class Database : InfoManager {
         var tempCategories :[Category] = []
         if let results = fetchResults {
             if (results.count > 0){
-                print(results)
+                //print(results)
                 for result : Category in results {
                     tempCategories.append(result)
                 }
@@ -38,12 +38,36 @@ class Database : InfoManager {
         }
     }
     
+    func getSubCategories(belongs:Category) -> [SubCategory] {
+        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
+        let predicate = NSPredicate(format: "belongs == %@",belongs)
+        fetchRequest.predicate = predicate
+        //let error : NSError
+        let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [SubCategory]
+        //subCategories.removeAll(keepCapacity: false)
+        var tempSubCategories :[SubCategory] = []
+        if let results = fetchResults {
+        for result : SubCategory in results {
+                tempSubCategories.append(result)
+            }
+            print("SubCategories fetched from DB")
+            return tempSubCategories
+            
+        } else {
+            print("Could not fetch subcategories from DB lets take from Default Model")
+            return (nextInfo?.getSubCategories(belongs))!
+        }
+       
+    }
+
     
     
     
-    func saveCategoryToDB(name:String,subcategories:[String]) {
+    
+    func saveCategoryToDB(type:String,name:String,subcategories:[String]) {
         let category : Category =  NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: managedContext) as! Category
         category.name = name
+        category.type = type
         for subcategory in subcategories {
             saveSubCategoryToDB(category, name: subcategory)
         }
@@ -61,6 +85,12 @@ class Database : InfoManager {
         let subCategory : SubCategory =  NSEntityDescription.insertNewObjectForEntityForName("SubCategory", inManagedObjectContext: managedContext) as! SubCategory
         subCategory.belongs = belongs
         subCategory.name = name
+        var error : NSError?
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            error = error1
+        }
     }
     
     func saveExpenseToDB(value: Float) {
@@ -102,29 +132,29 @@ class Database : InfoManager {
     return tempCategories
     }*/
     
-    
+    /*
     func fetchSubCategories(belongs:Category) -> [SubCategory]{
-        //subcategories.removeAll(keepCapacity: false)
-        //let belongs : Category = categories[selectedIndexCat!]
-        //print(selectedIndexCat, terminator: "")
-        //print(belongs, terminator: "")
-        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
-        let predicate = NSPredicate(format: "belongs == %@",belongs)
-        fetchRequest.predicate = predicate
-        //let error : NSError
-        let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [SubCategory]
-        //subCategories.removeAll(keepCapacity: false)
-        var tempSubCategories :[SubCategory] = []
-        if let results = fetchResults {
-            print(results)
-            for result : SubCategory in results {
-                tempSubCategories.append(result)
-            }
-        } else {
-            print("Could not fetch")
-        }
-        return tempSubCategories
+    //subcategories.removeAll(keepCapacity: false)
+    //let belongs : Category = categories[selectedIndexCat!]
+    //print(selectedIndexCat, terminator: "")
+    //print(belongs, terminator: "")
+    let fetchRequest = NSFetchRequest(entityName: "SubCategory")
+    let predicate = NSPredicate(format: "belongs == %@",belongs)
+    fetchRequest.predicate = predicate
+    //let error : NSError
+    let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [SubCategory]
+    //subCategories.removeAll(keepCapacity: false)
+    var tempSubCategories :[SubCategory] = []
+    if let results = fetchResults {
+    //print(results)
+    for result : SubCategory in results {
+    tempSubCategories.append(result)
     }
+    } else {
+    print("Could not fetch")
+    }
+    return tempSubCategories
+    }*/
     
     
     func fetchExpenses() -> [Expense] {

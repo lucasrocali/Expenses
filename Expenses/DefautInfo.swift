@@ -10,7 +10,7 @@ import Foundation
 
 class DefaultInfo : InfoManager {
     var nextInfo : InfoManager? = nil
-    var defaultData = [
+    var defaultExpenses = [
         "General":["General10","General2","General3"],
         "House":["House1","House2","House3"],
         "Food":["Food1","Food2","Food3"],
@@ -21,14 +21,30 @@ class DefaultInfo : InfoManager {
         "Car":["Car1","Car2","Car3"],
         "Personal":["Personal1","Personal2","Personal3"]
     ]
+    var defaultIncomes = [
+        "Salary":["Promotion","Salary"],
+        "Gift":["From mom","From dad"],
+        "Stocks":["APPL","BBDC","GGLE"]
+    ]
     
     func getCategories() -> [Category] {
         let database : Database = Database()
-        for (data,subdata) in defaultData {
-            database.saveCategoryToDB(data, subcategories: subdata)
+        for (data,subdata) in defaultExpenses {
+            database.saveCategoryToDB("Expense",name:data, subcategories: subdata)
               
+        }
+        for (data,subdata) in defaultIncomes {
+            database.saveCategoryToDB("Income",name:data, subcategories: subdata)
+            
         }
         print("Created default model, lets fetch from DB")
         return database.getCategories()
+    }
+    
+    func getSubCategories(belongs: Category) -> [SubCategory] {
+        getCategories()
+        let database : Database = Database()
+        print("Created default model, lets fetch from DB")
+        return database.getSubCategories(belongs)
     }
 }
