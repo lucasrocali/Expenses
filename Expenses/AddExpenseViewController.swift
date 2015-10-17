@@ -13,7 +13,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     var model = Model.sharedInstance
     
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
-        var alert = UIAlertView()
+        let alert = UIAlertView()
         if model.category {
             alert.title = "Enter new category"
         } else {
@@ -30,7 +30,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         ////println("\(buttonTitle) pressed")
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
-            print(textField!.text)
+            print(textField!.text, terminator: "")
             if model.category {
                // model.categories.append(textField!.text)
                 //SAVE CATEGORY .....
@@ -40,17 +40,17 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             cvCategory.reloadData()
             
         } else {
-            println("Cancel pressed")
+            print("Cancel pressed")
         }
     }
     
     @IBAction func saveExpense(sender: AnyObject) {
-        println("Save expense\n category : \(model.selectedIndexCat!) \n subcategory \(model.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
+        print("Save expense\n category : \(model.selectedIndexCat!) \n subcategory \(model.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
         
         model.saveExpense((lblTotal.text! as NSString).floatValue)
     }
     @IBAction func swpRight(sender: AnyObject) {
-        println("Swipe Right")
+        print("Swipe Right")
     }
     @IBOutlet var swpRight: UISwipeGestureRecognizer!
     @IBOutlet var lblCalculation: UILabel!
@@ -63,7 +63,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     let tapRec = UITapGestureRecognizer()
     
     @IBAction func expenseIncomeAction(sender: AnyObject) {
-        println("Expense/Income")
+        print("Expense/Income")
     }
     @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
@@ -95,11 +95,12 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         tapRec.addTarget(self, action: "labelTapped")
         lblTotal.addGestureRecognizer(tapRec)
         
-        model.createDefaultCategories()
+        model.getData()
+        //model.createDefaultCategories()
     }
     
     func labelTapped(){
-        println("labelTapped")
+        print("labelTapped")
         model.resetInput()
         lblTotal.text = "0"
         lblCalculation.text = "0"
@@ -171,21 +172,21 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         
         if collectionView === self.cvCategory {
             if model.selectedIndexSubCat != nil {
-                var lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndexSubCat!, inSection: 0)
-                var celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
+                let lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.selectedIndexSubCat!, inSection: 0)
+                let celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
                 if !model.category {
                     celll!.backgroundColor = UIColor.clearColor()
                 }
             }
             
-            println("Cell \(indexPath.row) selected")
-            var cell = collectionView.cellForItemAtIndexPath(indexPath)
+            print("Cell \(indexPath.row) selected")
+            let cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             if !model.category {
                 model.selectedIndexSubCat = indexPath.row
             } else {
                 model.selectedIndexCat = indexPath.row
-                model.getSubCategories()
+                model.getSubCategories(model.categories[model.selectedIndexCat!])
             }
             model.category = false
             
@@ -193,16 +194,16 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         } else {
             
             if indexPath.row % 5 == 0 { //Its not part of calculator
-                println("Non calculator part")
+                print("Non calculator part")
                 
             } else {    //calculator part
-                println("Calculator part")
+                print("Calculator part")
                 var unreadableString : String = ""
                 var unusualTotal : String = ""
                 (unusualTotal,unreadableString) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
                 lblCalculation.text! = model.getReadableString(unreadableString)
                 //lblTotal.text! = unusualTotal
-                println("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
+                print("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
                 lblTotal.text! = model.getUsualTotal(unusualTotal)
             }
         }
@@ -232,10 +233,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, atIndexPath indexPath: NSIndexPath) -> UICollectionReusableView {
         //println("ip = \(indexPath.item)")
         if collectionView === self.cvCategory {
-            var supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath) as! UICollectionReusableView
+            let supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath) 
             return supplementaryView
         } else {
-            var supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath) as! UICollectionReusableView
+            let supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath) 
             //supplementaryView.backgroundColor = UIColor.blueColor()
             return supplementaryView
         }

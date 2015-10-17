@@ -9,6 +9,19 @@
 import Foundation
 import CoreData
 import UIKit
+/*
+
+To do: 
+Chain of responsability between database and model
+
+
+
+
+
+
+
+
+*/
 
 class Model {
     
@@ -24,6 +37,8 @@ class Model {
         return Static.instance!
     }
     
+    var information : InfoManager = Database()
+    
     var integerNum = 0
     var calculating = "0"
     var calculator : Float = 0.00
@@ -33,8 +48,8 @@ class Model {
     var calculatorNumbers =
     ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
     //["1"]
-    var defaultData = [
-        "General":["General1","General2","General3"],
+   /* var defaultData = [
+        "General":["General10","General2","General3"],
         "House":["House1","House2","House3"],
         "Food":["Food1","Food2","Food3"],
         "Groceries":["Groceries1","Groceries2","Groceries3"],
@@ -43,20 +58,18 @@ class Model {
         "Utilities":["Utilities1","Utilities2","Utilities3"],
         "Car":["Car1","Car2","Car3"],
         "Personal":["Personal1","Personal2","Personal3"]
-    ]
+    ]*/
     var categories : [Category] = []
     var subcategories : [SubCategory] = []
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
-    
     //let appDelegate : AppDelegate
     
-    var managedContext : NSManagedObjectContext {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).managedObjectContext!
-    }
     
     var expenses : [Expense] = []
+    
+    var database : Database = Database()
     
     func resetInput() {
         integerNum = 0
@@ -67,19 +80,39 @@ class Model {
     }
     
     init() {
-        println("criando classe")
+        print("criando classe")
+        categories = information.getCategories()
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
     }
+    /*
+    func getCategories(){
+        categories = database.getCategories()
+    }*/
+    func getSubCategories(belongs:Category){
+        subcategories = database.fetchSubCategories(belongs)
+    }
+    func getExpenses(){
+        expenses = database.fetchExpenses()
+    }
+    func saveExpense(value:Float){
+        database.saveExpenseToDB(value)
+    }
+    func getData(){
+        
+    }
 
-    func createDefaultCategories() {
+    func getSubCatecories(){
+        
+    }
+    /*func createDefaultCategories() {
         for (data,subdata) in defaultData {
             saveCategory(data, subcategories: subdata)
             
         }
         
         //self.fetchCategories()
-    }
+    }*/
     /*
     func fetchCategories(){
         let fetchRequest = NSFetchRequest(entityName: "Category")
@@ -117,18 +150,7 @@ class Model {
 
     }
     */
-    func saveCategory(name:String,subcategories:[String]) {
-        let category : Category =  NSEntityDescription.insertNewObjectForEntityForName("Category", inManagedObjectContext: managedContext) as! Category
-        category.name = name
-        for subcategory in subcategories {
-            saveSubCategory(category, name: subcategory)
-        }
-        //category.subcategories = tempsubcategories
-        categories.append(category)
-        var error : NSError?
-        managedContext.save(&error)
-        
-    }
+    
     
     /*
     func saveSubCategories(belongs:String,subCategories:[String]) {
@@ -137,12 +159,6 @@ class Model {
         }
     }
     */
-    func saveSubCategory(belongs:Category,name:String) {
-        let subCategory : SubCategory =  NSEntityDescription.insertNewObjectForEntityForName("SubCategory", inManagedObjectContext: managedContext) as! SubCategory
-        subCategory.belongs = belongs
-        subCategory.name = name
-    }
-
     func getCategory(name:String) -> Category? {
         for category in categories {
             if category.name == name {
@@ -153,57 +169,11 @@ class Model {
         
     }
     
-    func getSubCategories() {
-        subcategories.removeAll(keepCapacity: false)
-        var belongs : Category = categories[selectedIndexCat!]
-        print(selectedIndexCat)
-        print(belongs)
-        let fetchRequest = NSFetchRequest(entityName: "SubCategory")
-        let predicate = NSPredicate(format: "belongs == %@",belongs)
-        fetchRequest.predicate = predicate
-        var error : NSError?
-        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [SubCategory]
-        //subCategories.removeAll(keepCapacity: false)
-        if let results = fetchResults {
-            println(results)
-            for result in results {
-                subcategories.append(result)
-            }
-        } else {
-            println("Could not fetch \(error)")
-        }
-    }
     
     
-    func fetchExpenses() {
-       
-        let fetchRequest = NSFetchRequest(entityName: "Expense")
-        var error : NSError?
-        let fetchResults = managedContext.executeFetchRequest(fetchRequest, error: &error) as? [NSManagedObject]
-        if let results = fetchResults {
-            expenses.removeAll(keepCapacity: false)
-            for result in results {
-                expenses.append(result as! Expense)
-            }
-        } else {
-            println("Could not fetch \(error)")
-        }
-    }
-    
-    func saveExpense(value: Float) {
-        let expense : Expense =  NSEntityDescription.insertNewObjectForEntityForName("Expense", inManagedObjectContext: managedContext) as! Expense
-
-        expense.value = value
-        expense.subcategory = subcategories[selectedIndexSubCat!]
-        //expenses.append(expense)
-        fetchExpenses()
-        var error : NSError?
-        managedContext.save(&error)
-        //CORE DATA NOT SAVING
-    }
     
     func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
-        var keyPressed = calculatorNumbers[indexPressed]
+        let keyPressed = calculatorNumbers[indexPressed]
         var totalText = lastTotal
         if keyPressed == "=" {
             totalText = lastTotal
@@ -213,7 +183,7 @@ class Model {
         }
         if (indexPressed + 1)%5 != 0 && indexPressed != 17{ //Number or point
             if indexPressed == 17 {         //.
-                println("DOT")
+                print("DOT")
                 integerNum = 1              //Its a point
                 if !oneDot {                //Its a first dot
                     if calculating == "0" {
@@ -252,7 +222,7 @@ class Model {
                 //println("OP 1")
                 oneOp = false
                 calculationText = calculationText + keyPressed
-                println("AKI >>> \(calculationText)")
+                print("AKI >>> \(calculationText)")
                 totalText =  "\(calculateTotal(calculationText))"
             }
             
@@ -297,7 +267,7 @@ class Model {
     
     func getReadableString(str:String) -> String {
         var newStr = ""
-        for s in str {
+        for s in str.characters {
             if isOp(s) {
                 newStr += " " + "\(s)" + " "
             }
@@ -311,7 +281,7 @@ class Model {
     func getUsualTotal(total:String) -> String {
         var newTotal : String = ""
         var twoStepsForward : Int = 0
-        for t in total {
+        for t in total.characters {
             
             if twoStepsForward == 1 {
                 newTotal += "\(t)"
@@ -333,23 +303,23 @@ class Model {
     
     func calculateTotal(str:String) -> Float {
         //var str = "6.00 / 3.00 - 18.00"
-        println("STR ==== " + str)
+        print("STR ==== " + str)
         var n : [Float] = []
         var o : [String] = []
         var tempChar : String = ""
         var op : String = ""
         var numOrOp : Int // 0 for num 1 for op
         numOrOp = 0
-        var strLength = count(str)
+        let strLength = str.characters.count
         var cnt = 0
-        for currentChar in str {
+        for currentChar in str.characters {
             cnt++
             // if isNum(s){
             if numOrOp == 0 && isNum(currentChar){
                 tempChar = tempChar + "\(currentChar)"
             }
             if numOrOp == 0 && isOp(currentChar) {
-                var floatNum : Float = (tempChar as NSString).floatValue
+                let floatNum : Float = (tempChar as NSString).floatValue
                 n.append(floatNum)
                 tempChar = "\(currentChar)"
                 numOrOp = 1
@@ -361,7 +331,7 @@ class Model {
             }
             
             if cnt == strLength{
-                var floatNum : Float = (tempChar as NSString).floatValue
+                let floatNum : Float = (tempChar as NSString).floatValue
                 n.append(floatNum)
                 tempChar = "\(currentChar)"
                 numOrOp = 1
@@ -383,8 +353,8 @@ class Model {
             }*/
             
         }
-        println(n)
-        println(o)
+        print(n)
+        print(o)
         if o.count > 0 {
             var empty = false
             var hasPreference : Bool = keepPreference(o)
@@ -393,14 +363,14 @@ class Model {
                 for i in 0 ... o.count {
                     if hasPreference {
                         if o[i] == "x" {
-                            var res = n[i]*n[i+1]
+                            let res = n[i]*n[i+1]
                             n[i] = res
                             n.removeAtIndex(i+1)
                             o.removeAtIndex(i)
                             hasPreference = keepPreference(o)
                             break
                         } else if o[i] == "/" {
-                            var res = n[i]/n[i+1]
+                            let res = n[i]/n[i+1]
                             n[i] = res
                             n.removeAtIndex(i+1)
                             o.removeAtIndex(i)
@@ -408,17 +378,17 @@ class Model {
                             break
                         }
                     } else {
-                        println("\(i)")
+                        print("\(i)")
                         if o[i] == "+" {
-                            println("+")
-                            var res = n[i]+n[i+1]
+                            print("+")
+                            let res = n[i]+n[i+1]
                             n[i] = res
                             n.removeAtIndex(i+1)
                             o.removeAtIndex(i)
                             break
                         }
                         if o[i] == "-" {
-                            var res = n[i]-n[i+1]
+                            let res = n[i]-n[i+1]
                             n[i] = res
                             n.removeAtIndex(i+1)
                             o.removeAtIndex(i)
@@ -432,7 +402,7 @@ class Model {
                 
             }
         }
-        println(n)
+        print(n)
         return n[0]
     }
     

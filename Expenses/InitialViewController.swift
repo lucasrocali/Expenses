@@ -44,7 +44,7 @@ class InitialViewController: UITabBarController,PFLogInViewControllerDelegate, P
     
     func signUpViewController(signUpController: PFSignUpViewController, shouldBeginSignUp info: [NSObject : AnyObject]) -> Bool {
         if let password = info["password"] as? String {
-            if count(password.utf16) <= 8 {
+            if password.utf16.count <= 8 {
                 let alert = UIAlertView()
                 alert.title = "Invalid password"
                 alert.message = "Your password must have at least 8 characters"
@@ -75,10 +75,10 @@ class InitialViewController: UITabBarController,PFLogInViewControllerDelegate, P
     }
     
     func loginSetup() {
-        println("pica branca")
+        print("pica branca")
         if(PFUser.currentUser() == nil){
             //println("Log in")
-            var loginViewController = PFLogInViewController()
+            let loginViewController = PFLogInViewController()
             
             loginViewController.delegate = self
             /*
@@ -106,7 +106,7 @@ class InitialViewController: UITabBarController,PFLogInViewControllerDelegate, P
             
             //-*/
             
-            var signUpViewController = PFSignUpViewController()
+            let signUpViewController = PFSignUpViewController()
             //Layout
             
             /*

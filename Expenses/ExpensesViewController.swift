@@ -27,12 +27,12 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         self.view.endEditing(true)
-        println("selected \(indexPath.row)")
+        print("selected \(indexPath.row)")
         expensesTable.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
-        model.fetchExpenses()
+        model.getExpenses()
         expensesTable.reloadData()
     }
     
@@ -44,8 +44,8 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         
-        var cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
-            as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
+            
         
         cell.textLabel!.text = "\(model.expenses[indexPath.row].value)"
 
