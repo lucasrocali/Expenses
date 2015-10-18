@@ -8,11 +8,12 @@
 
 import UIKit
 
-class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
+class TransactionsViewController: UIViewController,UITableViewDelegate, UITableViewDataSource {
     
     var model = Model.sharedInstance
 
-    @IBOutlet var expensesTable: UITableView!
+    @IBOutlet weak var transactionsTableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
@@ -28,17 +29,17 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         self.view.endEditing(true)
         print("selected \(indexPath.row)")
-        expensesTable.reloadData()
+        transactionsTableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
-        model.getExpenses()
-        expensesTable.reloadData()
+        model.getTransactions()
+        transactionsTableView.reloadData()
     }
     
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return model.expenses.count
+        return model.transactions.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -47,9 +48,10 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
         let cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
             
         
-        cell.textLabel!.text = "\(model.expenses[indexPath.row].value)"
-        cell.detailTextLabel!.text = model.expenses[indexPath.row].subcategory.name
+        cell.textLabel!.text = "\(model.transactions[indexPath.row].value)"
+        //cell.detailTextLabel!.text = model.transactions[indexPath.row].subcategory.name + "type :" + model.transactions[indexPath.row].type
 
+        cell.detailTextLabel!.text = "\(model.transactions[indexPath.row].date)"
         return cell
     }
 

@@ -8,11 +8,14 @@
 
 import UIKit
 
-class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+class AddTransactionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var model = Model.sharedInstance
     var transactionType = TransactionType()
     var transactionValue = TransactionValue()
+    
+    //let date = NSDate()
+    
     
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         let alert = UIAlertView()
@@ -49,15 +52,17 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         }
     }
     
-    @IBAction func saveExpense(sender: AnyObject) {
+    
+    @IBAction func saveTransaction(sender: AnyObject) {
         if (transactionType.selectedIndexCat != nil && transactionType.selectedIndexSubCat != nil) {
-            print("Save expense\n category : \(transactionType.selectedIndexCat!) \n subcategory \(transactionType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
+            print("Save Transactio\n category : \(transactionType.selectedIndexCat!) \n subcategory \(transactionType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
             
-            model.saveExpense((lblTotal.text! as NSString).floatValue,subcategory:transactionType.getSelectedSubCategory())
+            model.saveTransaction(transactionType.type,value:(lblTotal.text! as NSString).floatValue,subcategory:transactionType.getSelectedSubCategory())
         }
     }
     @IBAction func swpRight(sender: AnyObject) {
-        print("Swipe Right")
+        
+        
     }
     @IBOutlet var swpRight: UISwipeGestureRecognizer!
     @IBOutlet var lblCalculation: UILabel!
@@ -161,14 +166,20 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             
             if indexPath.row % 5 == 0 {     //non calculator part
                 cell.backgroundColor = UIColor.grayColor()
+                if (indexPath.row == 0){    //date
+                    cell.lblNumber.text = "\(model.getDay()) \(model.getMonth())"
+                } else { //others
+                    cell.lblNumber.text = transactionValue.calculatorNumbers[indexPath.row]
+                }
             } else {    //calculator part
                 cell.backgroundColor = UIColor.whiteColor()
+                cell.lblNumber.text = transactionValue.calculatorNumbers[indexPath.row]
             }
             
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            cell.lblNumber.text = transactionValue.calculatorNumbers[indexPath.row]
+            
             //cell.lblNumber.text = String(indexPath.row)   //get index of collection view calculator
             return cell
         }

@@ -44,10 +44,10 @@
             </objects>
             <point key="canvasLocation" x="966" y="362"/>
         </scene>
-        <!--Add Expense View Controller-->
+        <!--Add Transaction View Controller-->
         <scene sceneID="0mi-eV-Lrn">
             <objects>
-                <viewController id="PhD-43-VSL" userLabel="Add Expense View Controller" customClass="AddExpenseViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="PhD-43-VSL" userLabel="Add Transaction View Controller" customClass="AddTransactionViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4A6-xr-fIC"/>
                         <viewControllerLayoutGuide type="bottom" id="Ooy-bd-Efg"/>
@@ -241,7 +241,7 @@
                     <navigationItem key="navigationItem" id="ns6-TV-4ak">
                         <barButtonItem key="rightBarButtonItem" title="Done" id="tns-pt-Qqa">
                             <connections>
-                                <action selector="saveExpense:" destination="PhD-43-VSL" id="NiU-tL-Lv3"/>
+                                <action selector="saveTransaction:" destination="PhD-43-VSL" id="IbX-lV-j3O"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -262,10 +262,10 @@
             </objects>
             <point key="canvasLocation" x="1817" y="1076"/>
         </scene>
-        <!--Expenses View Controller-->
+        <!--Transactions View Controller-->
         <scene sceneID="dkp-YA-DjA">
             <objects>
-                <viewController id="1hX-mY-XmA" userLabel="Expenses View Controller" customClass="ExpensesViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1hX-mY-XmA" userLabel="Transactions View Controller" customClass="TransactionsViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="sMu-V9-N5a"/>
                         <viewControllerLayoutGuide type="bottom" id="uy7-s5-Snf"/>
@@ -325,7 +325,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="8TZ-Dt-fgV"/>
                     <connections>
-                        <outlet property="expensesTable" destination="EFB-uo-gOg" id="6Gr-RZ-xzw"/>
+                        <outlet property="transactionsTableView" destination="EFB-uo-gOg" id="U76-nj-zN2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YQe-FK-wt4" userLabel="First Responder" sceneMemberID="firstResponder"/>

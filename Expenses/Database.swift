@@ -95,14 +95,20 @@ class Database : InfoManager {
         }
     }
     
-    func saveExpenseToDB(value: Float,subcategory:SubCategory) {
-        let expense : Expense =  NSEntityDescription.insertNewObjectForEntityForName("Expense", inManagedObjectContext: managedContext) as! Expense
+    
+    func saveTransactionToDB(type:String,value: Float,subcategory:SubCategory,date:NSDate) {
+        let transaction : Transaction =  NSEntityDescription.insertNewObjectForEntityForName("Transaction", inManagedObjectContext: managedContext) as! Transaction
         
-        expense.value = value
-        expense.subcategory = subcategory
+        transaction.type = type
+        transaction.value = value
+        transaction.subcategory = subcategory
+        transaction.date = date
+        
+        
+        
         //expense.subcategory = subcategories[selectedIndexSubCat!]
         //expenses.append(expense)
-        fetchExpenses()
+        fetchTransactions()
         var error : NSError?
         do {
             try managedContext.save()
@@ -160,19 +166,19 @@ class Database : InfoManager {
     }*/
     
     
-    func fetchExpenses() -> [Expense] {
-        var tempExpenses : [Expense] = []
-        let fetchRequest = NSFetchRequest(entityName: "Expense")
+    func fetchTransactions() -> [Transaction] {
+        var tempTransactions : [Transaction] = []
+        let fetchRequest = NSFetchRequest(entityName: "Transaction")
         //let error : NSError?
         let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject]
         if let results = fetchResults {
             for result in results {
-                tempExpenses.append(result as! Expense)
+                tempTransactions.append(result as! Transaction)
             }
         } else {
             print("Could not fetch")
         }
-        return tempExpenses
+        return tempTransactions
     }
     
     

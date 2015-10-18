@@ -15,7 +15,7 @@ class TransactionValue {
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
-    var calculatorNumbers = ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
+    var calculatorNumbers = ["Date","7","8","9","/","Photo","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
     let calculator:Calculator = Calculator()
     func resetInput() {
         integerNum = 0
@@ -57,8 +57,8 @@ class TransactionValue {
     func dotPresssed(){
         integerNum = 1
         //First dot
-        if !oneDot {
-            if calculating == "0" {
+        if !oneDot && !hasDot(calculationText){
+            if calculating == "0"{
                 totalText += "."
             }
             calculationText += "."
@@ -101,6 +101,20 @@ class TransactionValue {
         }
         oneOp = true
         oneDot = false
+    }
+    
+    func hasDot(total:String) -> Bool{
+        var hasdot : Bool = false
+        for t in total.characters {
+            if t == "." {
+                hasdot = true
+            }
+            if calculator.isOp(t){
+                hasdot = false
+            }
+            
+        }
+        return hasdot
     }
     
 }

@@ -4,17 +4,19 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
-    <entity name="Expense" representedClassName="Expenses.Expense" syncable="YES">
-        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="subcategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SubCategory" syncable="YES"/>
-    </entity>
     <entity name="SubCategory" representedClassName="Expenses.SubCategory" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="belongs" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" syncable="YES"/>
     </entity>
+    <entity name="Transaction" representedClassName="Expenses.Transaction" syncable="YES">
+        <attribute name="date" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="type" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="value" optional="YES" attributeType="Float" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="subcategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SubCategory" syncable="YES"/>
+    </entity>
     <elements>
-        <element name="Category" positionX="-38" positionY="-96" width="128" height="75"/>
-        <element name="Expense" positionX="-218" positionY="-241" width="128" height="73"/>
-        <element name="SubCategory" positionX="135" positionY="-16" width="128" height="73"/>
+        <element name="Category" positionX="-117" positionY="51" width="128" height="75"/>
+        <element name="SubCategory" positionX="135" positionY="-16" width="128" height="75"/>
+        <element name="Transaction" positionX="-218" positionY="-241" width="128" height="103"/>
     </elements>
 </model>

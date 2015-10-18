@@ -21,6 +21,8 @@ class TransactionType {
     var categories : [Category] = []
     var subcategories : [SubCategory] = []
     
+  
+    
     init() {
         type = "Expense"
         categories = information.getCategories(type)

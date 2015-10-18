@@ -9,7 +9,9 @@
 import Foundation
 import CoreData
 
-class Expense: NSManagedObject {
+class Transaction: NSManagedObject {
+    @NSManaged var type : String
     @NSManaged var value : Float
     @NSManaged var subcategory : SubCategory
+    @NSManaged var date : NSDate
 }
