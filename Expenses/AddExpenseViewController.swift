@@ -53,7 +53,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         if (transactionType.selectedIndexCat != nil && transactionType.selectedIndexSubCat != nil) {
             print("Save expense\n category : \(transactionType.selectedIndexCat!) \n subcategory \(transactionType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
             
-            model.saveExpense((lblTotal.text! as NSString).floatValue)
+            model.saveExpense((lblTotal.text! as NSString).floatValue,subcategory:transactionType.getSelectedSubCategory())
         }
     }
     @IBAction func swpRight(sender: AnyObject) {
@@ -204,7 +204,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
                 print("Non calculator part")
                 
             } else {    //calculator part
-                (lblTotal.text!,lblCalculation.text!) = transactionValue.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+                (lblTotal.text!,lblCalculation.text!) = transactionValue.getTotalAndCalculation(indexPath.row)
                 
             }
         }

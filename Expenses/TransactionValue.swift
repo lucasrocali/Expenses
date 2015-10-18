@@ -25,17 +25,15 @@ class TransactionValue {
         oneDot = false
         oneOp = false
     }
-    func getTotalAndCalculation(indexPressed:Int, lastTotal:String) -> (String,String) {
+    func getTotalAndCalculation(indexPressed:Int) -> (String,String) {
         let keyPressed = calculatorNumbers[indexPressed]
         print("PRESSED KEY \(keyPressed) AT POSITION \(indexPressed)")
         //=
         if keyPressed == "=" {
-            print("Equal pressed")
             equalPressed()
         }
         //.
         if keyPressed == "." {
-            print("Dot pressed")
             dotPresssed()
         }
         //Number
@@ -45,7 +43,6 @@ class TransactionValue {
         }
         //Operation
         if (indexPressed + 1)%5 == 0{
-            print("Operation pressed")
             operatorPressed(keyPressed)
             
         }
@@ -58,8 +55,9 @@ class TransactionValue {
     }
     
     func dotPresssed(){
-        integerNum = 1              //Its a point
-        if !oneDot {                //Its a first dot
+        integerNum = 1
+        //First dot
+        if !oneDot {
             if calculating == "0" {
                 totalText += "."
             }
@@ -71,9 +69,8 @@ class TransactionValue {
     
     func numberPressed(inputNumber:String){
         if calculating == "0"{
-            print("Just add number to string")
+           //Just add Number
             oneOp = false
-            //var total = "0"
             if integerNum == 0 {
                 if totalText == "0" {
                     totalText  = inputNumber
@@ -89,7 +86,7 @@ class TransactionValue {
             }
         }
         else {
-            print("Calculate result")
+            //Calculate result
             oneOp = false
             calculationText = calculationText + inputNumber
             totalText =  "\(calculator.calculateTotal(calculationText))"

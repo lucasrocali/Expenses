@@ -36,14 +36,6 @@ class Model {
         return Static.instance!
     }
 
-    /*var integerNum = 0
-    var calculating = "0"
-    var calculator : Float = 0.00
-    var calculationText = ""
-    var oneDot : Bool = false
-    var oneOp : Bool = false
-    var calculatorNumbers = ["Photo","7","8","9","/","Date","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]*/
-    
     var expenses : [Expense] = []
     
     var database : Database = Database()
@@ -59,8 +51,8 @@ class Model {
     func getExpenses(){
         expenses = database.fetchExpenses()
     }
-    func saveExpense(value:Float){
-        database.saveExpenseToDB(value)
+    func saveExpense(value:Float,subcategory:SubCategory){
+        database.saveExpenseToDB(value,subcategory:subcategory)
     }
     
         

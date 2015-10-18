@@ -95,10 +95,11 @@ class Database : InfoManager {
         }
     }
     
-    func saveExpenseToDB(value: Float) {
+    func saveExpenseToDB(value: Float,subcategory:SubCategory) {
         let expense : Expense =  NSEntityDescription.insertNewObjectForEntityForName("Expense", inManagedObjectContext: managedContext) as! Expense
         
         expense.value = value
+        expense.subcategory = subcategory
         //expense.subcategory = subcategories[selectedIndexSubCat!]
         //expenses.append(expense)
         fetchExpenses()

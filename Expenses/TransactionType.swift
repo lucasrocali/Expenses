@@ -57,6 +57,10 @@ class TransactionType {
         selectedIndexSubCat = nil
 
     }
+    
+    func getSelectedSubCategory() -> SubCategory {
+        return subcategories[selectedIndexSubCat!]
+    }
    
 
 }

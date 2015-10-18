@@ -48,6 +48,7 @@ class ExpensesViewController: UIViewController,UITableViewDelegate, UITableViewD
             
         
         cell.textLabel!.text = "\(model.expenses[indexPath.row].value)"
+        cell.detailTextLabel!.text = model.expenses[indexPath.row].subcategory.name
 
         return cell
     }
