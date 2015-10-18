@@ -110,6 +110,9 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         lblTotal.addGestureRecognizer(tapRec)
     
     }
+    override func viewDidAppear(animated: Bool) {
+        cvCalculator.reloadData()
+    }
     
     func labelTapped(){
         print("labelTapped")

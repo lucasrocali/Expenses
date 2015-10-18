@@ -53,11 +53,12 @@ class Model {
     
     var database : Database = Database()
     
-     let date = NSDate()
+    var date : NSDate?
     let cal = NSCalendar.currentCalendar()
     
     init() {
         print("criando classe")
+        date = NSDate()
         //categories = information.getCategories()
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
@@ -71,15 +72,19 @@ class Model {
         let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
         let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
         print("Day \(day) month \(month) year \(year)")*/
-        database.saveTransactionToDB(type,value:value,subcategory:subcategory,date:date)
+        database.saveTransactionToDB(type,value:value,subcategory:subcategory,date:date!)
     }
     
     func getDay() -> Int{
-        return cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
+        return cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date!)
     }
     
     func getMonth() -> String {
-        return Months[cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date) - 1]
+        return Months[cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date!) - 1]
+    }
+    
+    func setDate(date:NSDate) {
+        self.date = date
     }
     
         

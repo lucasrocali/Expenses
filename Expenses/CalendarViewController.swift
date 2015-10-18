@@ -15,7 +15,6 @@ class CalendarViewController: UIViewController {
     @IBOutlet weak var menuView: CVCalendarMenuView!
     
     @IBOutlet weak var monthLabel: UILabel!
-    @IBOutlet weak var daysOutSwitch: UISwitch!
     
     var shouldShowDaysOut = true
     var animationFinished = true
@@ -25,7 +24,7 @@ class CalendarViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //monthLabel.text = CVDate(date: NSDate()).globalDescription
+        monthLabel.text = CVDate(date: NSDate()).globalDescription
     }
     
     override func viewDidLayoutSubviews() {
@@ -62,7 +61,10 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     
     func didSelectDayView(dayView: CVCalendarDayView) {
         let date = dayView.date
+        let model = Model.sharedInstance
+        model.setDate(date.convertedDate()!)
         print("\(calendarView.presentedDate.commonDescription) is selected!")
+        //self.dismissViewControllerAnimated(true, completion: nil);
     }
     
     func presentedDateUpdated(date: CVDate) {
