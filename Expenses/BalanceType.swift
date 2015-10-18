@@ -50,6 +50,13 @@ class BalanceType {
         subcategories = database.getSubCategories(categories[selectedIndexCat!])
         print("after \(subcategories.count)")
     }
+    
+    func backToCategories(){
+        category = true
+        selectedIndexCat = nil
+        selectedIndexSubCat = nil
+
+    }
    
 
 }

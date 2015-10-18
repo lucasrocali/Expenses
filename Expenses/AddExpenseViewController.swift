@@ -16,9 +16,9 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         let alert = UIAlertView()
         if balanceType.category {
-            alert.title = "Enter new category"
+            alert.title = "Enter new \(balanceType.type) category"
         } else {
-            alert.title = "Enter new subcategory"
+            alert.title = "Enter new \(balanceType.type) subcategory"
         }
         alert.addButtonWithTitle("Add")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
@@ -72,14 +72,13 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         balanceType.switchType()
         let btnExpenseIncome : UIButton = sender as! UIButton
         btnExpenseIncome.setTitle(balanceType.type, forState: .Normal)
+        balanceType.backToCategories()
         self.cvCategory.reloadData()
     }
     @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
-        balanceType.category = true
-        balanceType.selectedIndexCat = nil
-        balanceType.selectedIndexSubCat = nil
-        self.cvCategory.reloadData()
+        balanceType.backToCategories()
+                self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
