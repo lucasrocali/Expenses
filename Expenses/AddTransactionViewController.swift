@@ -213,6 +213,15 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             
             if indexPath.row % 5 == 0 { //Its not part of calculator
                 print("Non calculator part")
+                if indexPath.row == 0{
+                    var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    
+                    var vc: UIViewController = storyboard.instantiateViewControllerWithIdentifier("CalendarViewController") as! UIViewController
+                    
+                    //var vc: NewViewController = storyboard.instantiateViewControllerWithIdentifier("newView") as NewViewController
+                    
+                    self.presentViewController(vc, animated: true, completion: nil)
+                }
                 
             } else {    //calculator part
                 (lblTotal.text!,lblCalculation.text!) = transactionValue.getTotalAndCalculation(indexPath.row)

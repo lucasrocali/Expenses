@@ -262,6 +262,60 @@
             </objects>
             <point key="canvasLocation" x="1817" y="1076"/>
         </scene>
+        <!--Calendar View Controller-->
+        <scene sceneID="KfT-5Z-UgG">
+            <objects>
+                <viewController storyboardIdentifier="CalendarViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="muw-SI-Nah" userLabel="Calendar View Controller" customClass="CalendarViewController" customModule="Expenses" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="gFa-1C-Ovg"/>
+                        <viewControllerLayoutGuide type="bottom" id="dWw-pm-r0w"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hBj-TS-sio">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y1M-3V-ra6" userLabel="CalendarView" customClass="CVCalendarView" customModule="CVCalendar">
+                                <rect key="frame" x="0.0" y="90" width="600" height="300"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="bOw-40-HKS"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="animatorDelegate" destination="muw-SI-Nah" id="AKp-E1-FPf"/>
+                                    <outlet property="calendarAppearanceDelegate" destination="muw-SI-Nah" id="CIB-e5-AHZ"/>
+                                    <outlet property="calendarDelegate" destination="muw-SI-Nah" id="ndj-WS-uJa"/>
+                                </connections>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sQK-PN-drx" userLabel="CalendarMenuView" customClass="CVCalendarMenuView" customModule="CVCalendar">
+                                <rect key="frame" x="0.0" y="30" width="600" height="40"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="eyp-VC-FOV"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="menuViewDelegate" destination="muw-SI-Nah" id="aws-ao-C6w"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="y1M-3V-ra6" firstAttribute="leading" secondItem="hBj-TS-sio" secondAttribute="leadingMargin" constant="-20" id="16F-rc-45W"/>
+                            <constraint firstItem="sQK-PN-drx" firstAttribute="width" secondItem="hBj-TS-sio" secondAttribute="width" id="67l-US-cvh"/>
+                            <constraint firstAttribute="leadingMargin" secondItem="sQK-PN-drx" secondAttribute="leading" constant="20" id="A8r-Hu-GoP"/>
+                            <constraint firstItem="sQK-PN-drx" firstAttribute="top" secondItem="gFa-1C-Ovg" secondAttribute="bottom" constant="10" id="gnc-y2-BGT"/>
+                            <constraint firstItem="y1M-3V-ra6" firstAttribute="top" secondItem="sQK-PN-drx" secondAttribute="bottom" constant="20" id="gtx-Z2-dx5"/>
+                            <constraint firstItem="y1M-3V-ra6" firstAttribute="width" secondItem="hBj-TS-sio" secondAttribute="width" id="k6e-K4-kca"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="calendarView" destination="y1M-3V-ra6" id="KPw-Mn-FiD"/>
+                        <outlet property="menuView" destination="sQK-PN-drx" id="3t9-dF-hbz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="znH-mO-1pm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1906" y="-504"/>
+        </scene>
         <!--Transactions View Controller-->
         <scene sceneID="dkp-YA-DjA">
             <objects>
