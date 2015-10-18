@@ -11,14 +11,15 @@ import UIKit
 class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var model = Model.sharedInstance
-    var balanceType = BalanceType()
+    var transactionType = TransactionType()
+    var transactionValue = TransactionValue()
     
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         let alert = UIAlertView()
-        if balanceType.category {
-            alert.title = "Enter new \(balanceType.type) category"
+        if transactionType.category {
+            alert.title = "Enter new \(transactionType.type) category"
         } else {
-            alert.title = "Enter new \(balanceType.type) subcategory"
+            alert.title = "Enter new \(transactionType.type) subcategory"
         }
         alert.addButtonWithTitle("Add")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
@@ -32,13 +33,13 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
             print("ADD"+textField!.text!, terminator: "")
-            if balanceType.category {
-                balanceType.saveCategory(textField!.text!)
-                balanceType.getCategories()               //
+            if transactionType.category {
+                transactionType.saveCategory(textField!.text!)
+                transactionType.getCategories()               //
             } else {
-                balanceType.saveSubCategory(textField!.text!)
-                balanceType.getCategories()
-                balanceType.getSubCategories()
+                transactionType.saveSubCategory(textField!.text!)
+                transactionType.getCategories()
+                transactionType.getSubCategories()
                
             }
             cvCategory.reloadData()
@@ -49,8 +50,8 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     @IBAction func saveExpense(sender: AnyObject) {
-        if (balanceType.selectedIndexCat != nil && balanceType.selectedIndexSubCat != nil) {
-            print("Save expense\n category : \(balanceType.selectedIndexCat!) \n subcategory \(balanceType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
+        if (transactionType.selectedIndexCat != nil && transactionType.selectedIndexSubCat != nil) {
+            print("Save expense\n category : \(transactionType.selectedIndexCat!) \n subcategory \(transactionType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
             
             model.saveExpense((lblTotal.text! as NSString).floatValue)
         }
@@ -69,15 +70,15 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     let tapRec = UITapGestureRecognizer()
     
     @IBAction func expenseIncomeAction(sender: AnyObject) {
-        balanceType.switchType()
+        transactionType.switchType()
         let btnExpenseIncome : UIButton = sender as! UIButton
-        btnExpenseIncome.setTitle(balanceType.type, forState: .Normal)
-        balanceType.backToCategories()
+        btnExpenseIncome.setTitle(transactionType.type, forState: .Normal)
+        transactionType.backToCategories()
         self.cvCategory.reloadData()
     }
     @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
-        balanceType.backToCategories()
+        transactionType.backToCategories()
                 self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
@@ -107,7 +108,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     
     func labelTapped(){
         print("labelTapped")
-        model.resetInput()
+        transactionValue.resetInput()
         lblTotal.text = "0"
         lblCalculation.text = "0"
     }
@@ -121,15 +122,15 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
         if collectionView === self.cvCategory {
-            if balanceType.category {
+            if transactionType.category {
                 
-                count = balanceType.categories.count
+                count = transactionType.categories.count
             } else {
-                count = balanceType.subcategories.count
+                count = transactionType.subcategories.count
             }
             return count
         }
-        return model.calculatorNumbers.count
+        return transactionValue.calculatorNumbers.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -140,16 +141,16 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.backgroundColor = UIColor.grayColor()
-            if balanceType.selectedIndexSubCat == indexPath.row && !balanceType.category {
+            if transactionType.selectedIndexSubCat == indexPath.row && !transactionType.category {
                 cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             }
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            if balanceType.category{
-                cell.lblName.text = balanceType.categories[indexPath.row].name
+            if transactionType.category{
+                cell.lblName.text = transactionType.categories[indexPath.row].name
             } else {
-                cell.lblName.text = balanceType.subcategories[indexPath.row].name
+                cell.lblName.text = transactionType.subcategories[indexPath.row].name
             }
             return cell
         } else {
@@ -167,7 +168,7 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            cell.lblNumber.text = model.calculatorNumbers[indexPath.row]
+            cell.lblNumber.text = transactionValue.calculatorNumbers[indexPath.row]
             //cell.lblNumber.text = String(indexPath.row)   //get index of collection view calculator
             return cell
         }
@@ -177,10 +178,10 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
     func tappedCollectionView(collectionView: UICollectionView, indexPath: NSIndexPath) {
         
         if collectionView === self.cvCategory {
-            if balanceType.selectedIndexSubCat != nil {
-                let lastIndexPath : NSIndexPath = NSIndexPath(forRow: balanceType.selectedIndexSubCat!, inSection: 0)
+            if transactionType.selectedIndexSubCat != nil {
+                let lastIndexPath : NSIndexPath = NSIndexPath(forRow: transactionType.selectedIndexSubCat!, inSection: 0)
                 let celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
-                if !balanceType.category {
+                if !transactionType.category {
                     celll!.backgroundColor = UIColor.clearColor()
                 }
             }
@@ -188,13 +189,13 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
             print("Cell \(indexPath.row) selected")
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            if !balanceType.category {
-                balanceType.selectedIndexSubCat = indexPath.row
+            if !transactionType.category {
+                transactionType.selectedIndexSubCat = indexPath.row
             } else {
-                balanceType.selectedIndexCat = indexPath.row
-                balanceType.getSubCategories()
+                transactionType.selectedIndexCat = indexPath.row
+                transactionType.getSubCategories()
             }
-            balanceType.category = false
+            transactionType.category = false
             
             self.cvCategory.reloadData()
         } else {
@@ -203,14 +204,8 @@ class AddExpenseViewController: UIViewController, UICollectionViewDataSource, UI
                 print("Non calculator part")
                 
             } else {    //calculator part
-                print("Calculator part")
-                var unreadableString : String = ""
-                var unusualTotal : String = ""
-                (unusualTotal,unreadableString) = model.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
-                lblCalculation.text! = model.getReadableString(unreadableString)
-                //lblTotal.text! = unusualTotal
-                print("OIA A MERDA \(model.getUsualTotal(unusualTotal))")
-                lblTotal.text! = model.getUsualTotal(unusualTotal)
+                (lblTotal.text!,lblCalculation.text!) = transactionValue.getTotalAndCalculation(indexPath.row, lastTotal: lblTotal.text!)
+                
             }
         }
     }

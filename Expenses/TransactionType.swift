@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BalanceType {
+class TransactionType {
     var type : String
     var selectedIndexCat : Int?
     var selectedIndexSubCat : Int?
