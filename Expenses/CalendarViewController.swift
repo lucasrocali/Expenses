@@ -62,7 +62,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     func didSelectDayView(dayView: CVCalendarDayView) {
         let date = dayView.date
         let model = Model.sharedInstance
-        model.transactionType.setDate(date.convertedDate()!)
+        model.transactionInfoManager.transactionInfo.setDate(date.convertedDate()!)
         print("\(calendarView.presentedDate.commonDescription) is selected!")
         self.dismissViewControllerAnimated(true, completion: nil);
     }

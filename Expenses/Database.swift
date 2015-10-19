@@ -96,13 +96,13 @@ class Database : InfoManager {
     }
     
     
-    func saveTransactionToDB(type:String,value: Float,subcategory:SubCategory,date:NSDate) {
+    func saveTransactionToDB(transactionInfo:TransactionInfo) {
         let transaction : Transaction =  NSEntityDescription.insertNewObjectForEntityForName("Transaction", inManagedObjectContext: managedContext) as! Transaction
         
-        transaction.type = type
-        transaction.value = value
-        transaction.subcategory = subcategory
-        transaction.date = date
+        transaction.type = transactionInfo.getType()
+        transaction.value = transactionInfo.getValue()
+        transaction.subcategory = transactionInfo.getSubCategory()
+        transaction.date = transactionInfo.getDate()
         
         
         

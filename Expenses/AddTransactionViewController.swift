@@ -11,7 +11,6 @@ import UIKit
 class AddTransactionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var model = Model.sharedInstance
-    var transactionInfo = model.transactionInfo
    
     
     //let date = NSDate()
@@ -19,10 +18,10 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     
     @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
         let alert = UIAlertView()
-        if model.transactionType.category {
-            alert.title = "Enter new \(model.transactionType.type) category"
+        if model.transactionInfoManager.category {
+            alert.title = "Enter new \(model.transactionInfoManager.transactionInfo.getType()) category"
         } else {
-            alert.title = "Enter new \(model.transactionType.type) subcategory"
+            alert.title = "Enter new \(model.transactionInfoManager.transactionInfo.getType()) subcategory"
         }
         alert.addButtonWithTitle("Add")
         alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
@@ -36,13 +35,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
             print("ADD"+textField!.text!, terminator: "")
-            if model.transactionType.category {
-                model.transactionType.saveCategory(textField!.text!)
-                model.transactionType.getCategories()               //
+            if model.transactionInfoManager.category {
+                model.transactionInfoManager.saveCategory(textField!.text!)
+                model.transactionInfoManager.getCategories()               //
             } else {
-                model.transactionType.saveSubCategory(textField!.text!)
-                model.transactionType.getCategories()
-                model.transactionType.getSubCategories()
+                model.transactionInfoManager.saveSubCategory(textField!.text!)
+                model.transactionInfoManager.getCategories()
+                model.transactionInfoManager.getSubCategories()
                
             }
             cvCategory.reloadData()
@@ -54,9 +53,9 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     
     
     @IBAction func saveTransaction(sender: AnyObject) {
-        if (model.transactionType.selectedIndexCat != nil && model.transactionType.selectedIndexSubCat != nil) {
-            print("Save Transactio\n category : \(model.transactionType.selectedIndexCat!) \n subcategory \(model.transactionType.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
-            model.saveTransaction((lblTotal.text! as NSString).floatValue) 
+        if (model.transactionInfoManager.selectedIndexCat != nil && model.transactionInfoManager.selectedIndexSubCat != nil) {
+            print("Save Transactio\n category : \(model.transactionInfoManager.selectedIndexCat!) \n subcategory \(model.transactionInfoManager.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
+            model.saveTransaction() 
            
         }
     }
@@ -112,15 +111,15 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         
         self.view.insertSubview(updateType, aboveSubview: self.monthLabel)*/
         
-        model.transactionType.switchType()
+        model.transactionInfoManager.switchType()
         let btnExpenseIncome : UIButton = sender as! UIButton
-        btnExpenseIncome.setTitle(model.transactionType.type, forState: .Normal)
-        model.transactionType.backToCategories()
+        btnExpenseIncome.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
+        model.transactionInfoManager.backToCategories()
         self.cvCategory.reloadData()
     }
     @IBAction func backToCategories(sender: AnyObject) {
         //println("back to categorie")
-        model.transactionType.backToCategories()
+        model.transactionInfoManager.backToCategories()
                 self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
@@ -153,7 +152,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     
     func lblTotalTapped(){
         print("lblTotalTapped")
-        model.transactionValue.resetInput()
+        model.transactionInfoManager.resetInput()
         lblTotal.text = "0"
         lblCalculation.text = "0"
     }
@@ -167,15 +166,15 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
         if collectionView === self.cvCategory {
-            if model.transactionType.category {
+            if model.transactionInfoManager.category {
                 
-                count = model.transactionType.categories.count
+                count = model.transactionInfoManager.categories.count
             } else {
-                count = model.transactionType.subcategories.count
+                count = model.transactionInfoManager.subcategories.count
             }
             return count
         }
-        return model.transactionValue.calculatorNumbers.count
+        return model.transactionInfoManager.calculatorNumbers.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
@@ -186,16 +185,17 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.backgroundColor = UIColor.grayColor()
-            if model.transactionType.selectedIndexSubCat == indexPath.row && !model.transactionType.category {
+            if model.transactionInfoManager.selectedIndexSubCat == indexPath.row && !model.transactionInfoManager.category {
                 cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+                model.transactionInfoManager.setSubCategory()
             }
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
-            if model.transactionType.category{
-                cell.lblName.text = model.transactionType.categories[indexPath.row].name
+            if model.transactionInfoManager.category{
+                cell.lblName.text = model.transactionInfoManager.categories[indexPath.row].name
             } else {
-                cell.lblName.text = model.transactionType.subcategories[indexPath.row].name
+                cell.lblName.text = model.transactionInfoManager.subcategories[indexPath.row].name
             }
             return cell
         } else {
@@ -207,13 +207,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             if indexPath.row % 5 == 0 {     //non calculator part
                 cell.backgroundColor = UIColor.grayColor()
                 if (indexPath.row == 0){    //date
-                    cell.lblNumber.text = model.getDateString(model.transactionType.getDate())
+                    cell.lblNumber.text = model.getDateString(model.transactionInfoManager.transactionInfo.getDate())
                 } else { //others
-                    cell.lblNumber.text = model.transactionValue.calculatorNumbers[indexPath.row]
+                    cell.lblNumber.text = model.transactionInfoManager.calculatorNumbers[indexPath.row]
                 }
             } else {    //calculator part
                 cell.backgroundColor = UIColor.whiteColor()
-                cell.lblNumber.text = model.transactionValue.calculatorNumbers[indexPath.row]
+                cell.lblNumber.text = model.transactionInfoManager.calculatorNumbers[indexPath.row]
             }
             
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
@@ -229,10 +229,10 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     func tappedCollectionView(collectionView: UICollectionView, indexPath: NSIndexPath) {
         
         if collectionView === self.cvCategory {
-            if model.transactionType.selectedIndexSubCat != nil {
-                let lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.transactionType.selectedIndexSubCat!, inSection: 0)
+            if model.transactionInfoManager.selectedIndexSubCat != nil {
+                let lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.transactionInfoManager.selectedIndexSubCat!, inSection: 0)
                 let celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
-                if !model.transactionType.category {
+                if !model.transactionInfoManager.category {
                     celll!.backgroundColor = UIColor.clearColor()
                 }
             }
@@ -240,13 +240,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             print("Cell \(indexPath.row) selected")
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            if !model.transactionType.category {
-                model.transactionType.selectedIndexSubCat = indexPath.row
+            if !model.transactionInfoManager.category {
+                model.transactionInfoManager.selectedIndexSubCat = indexPath.row
             } else {
-                model.transactionType.selectedIndexCat = indexPath.row
-                model.transactionType.getSubCategories()
+                model.transactionInfoManager.selectedIndexCat = indexPath.row
+                model.transactionInfoManager.getSubCategories()
             }
-            model.transactionType.category = false
+            model.transactionInfoManager.category = false
             
             self.cvCategory.reloadData()
         } else {
@@ -264,8 +264,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
                 }
                 
             } else {    //calculator part
-                (lblTotal.text!,lblCalculation.text!) = model.transactionValue.getTotalAndCalculation(indexPath.row)
-                
+                (lblTotal.text!,lblCalculation.text!) = model.transactionInfoManager.getTotalAndCalculation(indexPath.row)
             }
         }
     }

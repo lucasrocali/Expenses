@@ -58,9 +58,12 @@ class Model {
     //var date : NSDate?
     let cal = NSCalendar.currentCalendar()
     
-    var transactionType = TransactionType()
-    var transactionValue = TransactionValue()
+    //var transactionType = TransactionType()
+   // var transactionValue = TransactionValue()
     
+    var transactionInfoManager : TransactionInfoManager = TransactionInfoManager()
+    
+
     init() {
         print("criando classe")
         //date = NSDate()
@@ -72,13 +75,14 @@ class Model {
         var temptransactions = database.fetchTransactions()
         transactions = temptransactions.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
     }
-    func saveTransaction(value:Float){
+    func saveTransaction(){
         /*
         let day = cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
         let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
         let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
         print("Day \(day) month \(month) year \(year)")*/
-        database.saveTransactionToDB(transactionType.type,value:value,subcategory:transactionType.getSelectedSubCategory(),date:transactionType.getDate())
+        
+        database.saveTransactionToDB(transactionInfoManager.transactionInfo)
     }
     
     func getDay(date:NSDate) -> Int{

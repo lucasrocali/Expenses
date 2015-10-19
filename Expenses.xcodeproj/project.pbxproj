@@ -11,8 +11,6 @@
 		781D2C2D1BD1472300CDE724 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C2C1BD1472300CDE724 /* Database.swift */; settings = {ASSET_TAGS = (); }; };
 		781D2C2F1BD147FD00CDE724 /* DefautInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C2E1BD147FD00CDE724 /* DefautInfo.swift */; settings = {ASSET_TAGS = (); }; };
 		781D2C311BD26A5900CDE724 /* InfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C301BD26A5900CDE724 /* InfoManager.swift */; settings = {ASSET_TAGS = (); }; };
-		781D2C331BD2C46800CDE724 /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C321BD2C46800CDE724 /* TransactionType.swift */; settings = {ASSET_TAGS = (); }; };
-		781D2C351BD3688700CDE724 /* TransactionValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D2C341BD3688700CDE724 /* TransactionValue.swift */; settings = {ASSET_TAGS = (); }; };
 		781D65B71BA7423200E87985 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 781D65B61BA7423200E87985 /* Transaction.swift */; };
 		784D9EDD1B31C137009AC784 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 784D9EDC1B31C137009AC784 /* AppDelegate.swift */; };
 		784D9EE01B31C137009AC784 /* Expenses.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 784D9EDE1B31C137009AC784 /* Expenses.xcdatamodeld */; };
@@ -80,8 +78,6 @@
 		781D2C2C1BD1472300CDE724 /* Database.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		781D2C2E1BD147FD00CDE724 /* DefautInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefautInfo.swift; sourceTree = "<group>"; };
 		781D2C301BD26A5900CDE724 /* InfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoManager.swift; sourceTree = "<group>"; };
-		781D2C321BD2C46800CDE724 /* TransactionType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionType.swift; sourceTree = "<group>"; };
-		781D2C341BD3688700CDE724 /* TransactionValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionValue.swift; sourceTree = "<group>"; };
 		781D65B61BA7423200E87985 /* Transaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		784D9ED71B31C137009AC784 /* Expenses.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Expenses.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		784D9EDB1B31C137009AC784 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -288,8 +284,6 @@
 				781D2C2C1BD1472300CDE724 /* Database.swift */,
 				781D2C2E1BD147FD00CDE724 /* DefautInfo.swift */,
 				781D2C301BD26A5900CDE724 /* InfoManager.swift */,
-				781D2C321BD2C46800CDE724 /* TransactionType.swift */,
-				781D2C341BD3688700CDE724 /* TransactionValue.swift */,
 				78FD26BE1BD37BB200E3D890 /* Calculator.swift */,
 				7895037E1BD555DA005B4C91 /* BalanceManager.swift */,
 				789503801BD557D1005B4C91 /* TransactionInfoManager.swift */,
@@ -452,12 +446,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				781D2C331BD2C46800CDE724 /* TransactionType.swift in Sources */,
 				781D65B71BA7423200E87985 /* Transaction.swift in Sources */,
 				785603AB1B36FE0800349FD8 /* Model.swift in Sources */,
 				784D9EE01B31C137009AC784 /* Expenses.xcdatamodeld in Sources */,
 				789503811BD557D1005B4C91 /* TransactionInfoManager.swift in Sources */,
-				781D2C351BD3688700CDE724 /* TransactionValue.swift in Sources */,
 				781D2C311BD26A5900CDE724 /* InfoManager.swift in Sources */,
 				78FD26C51BD3E6C200E3D890 /* CalendarViewController.swift in Sources */,
 				7895037F1BD555DA005B4C91 /* BalanceManager.swift in Sources */,
