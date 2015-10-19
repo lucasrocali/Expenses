@@ -56,15 +56,15 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     }
     
     func shouldAnimateResizing() -> Bool {
-        return true // Default value is true
+        return false // Default value is true
     }
     
     func didSelectDayView(dayView: CVCalendarDayView) {
         let date = dayView.date
         let model = Model.sharedInstance
-        model.setDate(date.convertedDate()!)
+        model.transactionType.setDate(date.convertedDate()!)
         print("\(calendarView.presentedDate.commonDescription) is selected!")
-        //self.dismissViewControllerAnimated(true, completion: nil);
+        self.dismissViewControllerAnimated(true, completion: nil);
     }
     
     func presentedDateUpdated(date: CVDate) {
@@ -110,11 +110,11 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     }
     
     func dotMarker(shouldShowOnDayView dayView: CVCalendarDayView) -> Bool {
-        let day = dayView.date.day
-        let randomDay = Int(arc4random_uniform(31))
-        if day == randomDay {
-            return true
-        }
+        //let day = dayView.date.day
+        //let randomDay = Int(arc4random_uniform(31))
+        //if day == randomDay {
+         //   return true
+       // }
         
         return false
     }
@@ -122,13 +122,13 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     func dotMarker(colorOnDayView dayView: CVCalendarDayView) -> [UIColor] {
         let day = dayView.date.day
         
-        let red = CGFloat(arc4random_uniform(600) / 255)
-        let green = CGFloat(arc4random_uniform(600) / 255)
-        let blue = CGFloat(arc4random_uniform(600) / 255)
+        let red = CGFloat(0 / 255)
+        let green = CGFloat(0 / 255)
+        let blue = CGFloat(0 / 255)
         
         let color = UIColor(red: red, green: green, blue: blue, alpha: 1)
         
-        let numberOfDots = Int(arc4random_uniform(3) + 1)
+        let numberOfDots = 1//Int(arc4random_uniform(3) + 1)
         switch(numberOfDots) {
         case 2:
             return [color, color]

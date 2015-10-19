@@ -49,42 +49,49 @@ class Model {
         }
         return Static.instance!
     }
+    
+    
     var transactions : [Transaction] = []
     
     var database : Database = Database()
     
-    var date : NSDate?
+    //var date : NSDate?
     let cal = NSCalendar.currentCalendar()
+    
+    var transactionType = TransactionType()
+    var transactionValue = TransactionValue()
     
     init() {
         print("criando classe")
-        date = NSDate()
+        //date = NSDate()
         //categories = information.getCategories()
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
     }
     func getTransactions(){
-        transactions = database.fetchTransactions()
+        var temptransactions = database.fetchTransactions()
+        transactions = temptransactions.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
     }
-    func saveTransaction(type:String,value:Float,subcategory:SubCategory){
+    func saveTransaction(value:Float){
         /*
         let day = cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
         let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
         let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
         print("Day \(day) month \(month) year \(year)")*/
-        database.saveTransactionToDB(type,value:value,subcategory:subcategory,date:date!)
+        database.saveTransactionToDB(transactionType.type,value:value,subcategory:transactionType.getSelectedSubCategory(),date:transactionType.getDate())
     }
     
-    func getDay() -> Int{
-        return cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date!)
+    func getDay(date:NSDate) -> Int{
+        return cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
     }
     
-    func getMonth() -> String {
-        return Months[cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date!) - 1]
+    func getMonth(date:NSDate) -> String {
+        return Months[cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date) - 1]
     }
     
-    func setDate(date:NSDate) {
-        self.date = date
+    
+    func getDateString(date:NSDate) -> String {
+        return "\(getDay(date)) \(getMonth(date))"
     }
     
         

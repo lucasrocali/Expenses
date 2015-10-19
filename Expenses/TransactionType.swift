@@ -21,11 +21,12 @@ class TransactionType {
     var categories : [Category] = []
     var subcategories : [SubCategory] = []
     
-  
+    var date : NSDate?
     
     init() {
         type = "Expense"
         categories = information.getCategories(type)
+        date = NSDate()
     }
     func switchType(){
         if type == "Expense"{
@@ -64,5 +65,11 @@ class TransactionType {
         return subcategories[selectedIndexSubCat!]
     }
    
+    func setDate(date:NSDate) {
+        self.date = date
+    }
+    func getDate() -> NSDate{
+        return self.date!
+    }
 
 }

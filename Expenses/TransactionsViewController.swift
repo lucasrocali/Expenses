@@ -47,11 +47,20 @@ class TransactionsViewController: UIViewController,UITableViewDelegate, UITableV
         
         let cell = tableView.dequeueReusableCellWithIdentifier("expenseCell", forIndexPath: indexPath)
             
+        let transaction : Transaction = model.transactions[indexPath.row]
         
-        cell.textLabel!.text = "\(model.transactions[indexPath.row].value)"
+        let color : UIColor?
+        if transaction.type == "Expense" {
+            color = UIColor(red: 231/255, green: 76/255, blue: 60/255, alpha: 1)
+            
+        } else {
+           color = UIColor(red: 46/255, green: 204/255, blue: 113/255, alpha: 1)
+        }
+        cell.backgroundColor = color!
+        cell.textLabel!.text = "\(transaction.value)"
         //cell.detailTextLabel!.text = model.transactions[indexPath.row].subcategory.name + "type :" + model.transactions[indexPath.row].type
 
-        cell.detailTextLabel!.text = "\(model.transactions[indexPath.row].date)"
+        cell.detailTextLabel!.text = "\(model.getDateString(transaction.date))"
         return cell
     }
 
