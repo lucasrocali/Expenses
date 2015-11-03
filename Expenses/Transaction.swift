@@ -10,6 +10,7 @@ import Foundation
 import CoreData
 
 class Transaction: NSManagedObject {
+    @NSManaged var id : String
     @NSManaged var type : String
     @NSManaged var value : Float
     @NSManaged var subcategory : SubCategory

@@ -103,7 +103,7 @@ class Database : InfoManager {
         transaction.value = transactionInfo.getValue()
         transaction.subcategory = transactionInfo.getSubCategory()
         transaction.date = transactionInfo.getDate()
-        
+        transaction.id = transactionInfo.getId()
         
         
         //expense.subcategory = subcategories[selectedIndexSubCat!]
@@ -115,6 +115,47 @@ class Database : InfoManager {
         } catch let error1 as NSError {
             error = error1
         }
+        //CORE DATA NOT SAVING
+    }
+    
+    func updateTransactionToDB(transactionInfo:TransactionInfo) {
+        //var appDel: AppDelegate = (UIApplication.sharedApplication().delegate as AppDelegate)
+        //var context: NSManagedObjectContext = appDel.managedObjectContext!
+        
+        let fetchRequest = NSFetchRequest(entityName: "Transaction")
+        fetchRequest.predicate = NSPredicate(format: "id = %@", transactionInfo.getId())
+        
+        if let fetchResults = try! managedContext.executeFetchRequest(fetchRequest) as? [NSManagedObject] {
+            if fetchResults.count != 0{
+                
+                let managedObject = fetchResults[0]
+                managedObject.setValue(transactionInfo.getType(), forKey: "type")
+                managedObject.setValue(transactionInfo.getValue(), forKey: "value")
+                managedObject.setValue(transactionInfo.getSubCategory(), forKey: "subcategory")
+                managedObject.setValue(transactionInfo.getDate(), forKey: "date")
+                
+                try! managedContext.save()
+            }
+        }
+        /*let transaction : Transaction =  NSEntityDescription.insertNewObjectForEntityForName("Transaction", inManagedObjectContext: managedContext) as! Transaction
+        
+        
+        transaction.type = transactionInfo.getType()
+        transaction.value = transactionInfo.getValue()
+        transaction.subcategory = transactionInfo.getSubCategory()
+        transaction.date = transactionInfo.getDate()
+        
+        
+        
+        //expense.subcategory = subcategories[selectedIndexSubCat!]
+        //expenses.append(expense)
+        fetchTransactions()
+        var error : NSError?
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            error = error1
+        }*/
         //CORE DATA NOT SAVING
     }
     

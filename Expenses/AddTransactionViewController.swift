@@ -18,7 +18,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
    
     func addCategorieOrSubCategorie() {
         let alert = UIAlertView()
-        if model.transactionInfoManager.category {
+        if model.transactionInfoManager.selectCategoryState {
             alert.title = "Enter new \(model.transactionInfoManager.transactionInfo.getType()) category"
         } else {
             alert.title = "Enter new \(model.transactionInfoManager.transactionInfo.getType()) subcategory"
@@ -36,7 +36,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         if buttonTitle == "Add" {
             let textField = alertView.textFieldAtIndex(0)
             print("ADD"+textField!.text!, terminator: "")
-            if model.transactionInfoManager.category {
+            if model.transactionInfoManager.selectCategoryState {
                 model.transactionInfoManager.saveCategory(textField!.text!)
                 model.transactionInfoManager.getCategories()               //
             } else {
@@ -56,7 +56,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     @IBAction func saveTransaction(sender: AnyObject) {
         if (model.transactionInfoManager.selectedIndexCat != nil && model.transactionInfoManager.selectedIndexSubCat != nil) {
             print("Save Transactio\n category : \(model.transactionInfoManager.selectedIndexCat!) \n subcategory \(model.transactionInfoManager.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
-            model.transactionInfoManager.saveTransaction()
+            if transactionState == 0 {  //create
+                model.transactionInfoManager.saveTransaction()
+            } else {    //save
+                model.transactionInfoManager.updateTransaction()
+                self.navigationController?.popToRootViewControllerAnimated(true)
+            }
+            
             
             model.transactionInfoManager.defaultTransactionInfo()
            
@@ -133,6 +139,8 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             model.transactionInfoManager.setTransactionInfo(model.balanceManager.transactions[transactionIndex!])
             lblTotal.text = "\(model.transactionInfoManager.transactionInfo.getValue())"
             lblCalculation.text = "\(model.transactionInfoManager.transactionInfo.getValue())"
+            cvCategory.reloadData()
+            
             //btnExpenseIncome.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
         }
         
@@ -162,7 +170,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         var count = 0
         if collectionView === self.cvCategory {
-            if model.transactionInfoManager.category {
+            if model.transactionInfoManager.selectCategoryState {
                 
                 count = model.transactionInfoManager.categories.count
             } else {
@@ -182,7 +190,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
             cell.backgroundColor = UIColor.grayColor()
-            if model.transactionInfoManager.selectedIndexSubCat == indexPath.row && !model.transactionInfoManager.category {
+            if model.transactionInfoManager.selectedIndexSubCat == indexPath.row && !model.transactionInfoManager.selectCategoryState {
                 cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
                 model.transactionInfoManager.setSubCategory()
             }
@@ -190,7 +198,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
             cell.lblName.font = normalFont
-            if model.transactionInfoManager.category{
+            if model.transactionInfoManager.selectCategoryState{
                 cell.lblName.text = model.transactionInfoManager.categories[indexPath.row].name
             } else {
                 cell.lblName.text = model.transactionInfoManager.subcategories[indexPath.row].name
@@ -231,7 +239,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             if model.transactionInfoManager.selectedIndexSubCat != nil {
                 let lastIndexPath : NSIndexPath = NSIndexPath(forRow: model.transactionInfoManager.selectedIndexSubCat!, inSection: 0)
                 let celll = collectionView.cellForItemAtIndexPath(lastIndexPath)
-                if !model.transactionInfoManager.category {
+                if !model.transactionInfoManager.selectCategoryState {
                     celll!.backgroundColor = UIColor.clearColor()
                 }
             }
@@ -239,13 +247,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             print("Cell \(indexPath.row) selected")
             let cell = collectionView.cellForItemAtIndexPath(indexPath)
             cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
-            if !model.transactionInfoManager.category {
+            if !model.transactionInfoManager.selectCategoryState {
                 model.transactionInfoManager.selectedIndexSubCat = indexPath.row
             } else {
                 model.transactionInfoManager.selectedIndexCat = indexPath.row
                 model.transactionInfoManager.getSubCategories()
             }
-            model.transactionInfoManager.category = false
+            model.transactionInfoManager.selectCategoryState = false
             
             self.cvCategory.reloadData()
         } else {
@@ -307,7 +315,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             btnBackToCategories.addTarget(self, action: "backToCategories", forControlEvents: .TouchUpInside)
             btnBackToCategories.setTitle("<", forState: .Normal)
             btnBackToCategories.titleLabel?.font = normalFont
-            if (model.transactionInfoManager.category) {
+            if (model.transactionInfoManager.selectCategoryState) {
                 btnBackToCategories.hidden = true
             } else {
                 btnBackToCategories.hidden = false

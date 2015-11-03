@@ -9,6 +9,7 @@
 import Foundation
 
 class TransactionInfo{
+    var id : String?
     var type : String?
     var value : Float?
     var subcategory : SubCategory?
@@ -26,6 +27,9 @@ class TransactionInfo{
     func setDate(date:NSDate){
         self.date = date
     }
+    func setId(id:String) {
+        self.id = id
+    }
     
     func getType() -> String{
         return self.type!
@@ -38,6 +42,9 @@ class TransactionInfo{
     }
     func getDate() -> NSDate{
         return self.date!
+    }
+    func getId() -> String {
+        return self.id!
     }
     
 }

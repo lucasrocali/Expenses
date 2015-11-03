@@ -19,7 +19,7 @@ class TransactionInfoManager {
     var information : InfoManager = Database()
     var database : Database = Database()
     
-    var category = true
+    var selectCategoryState = true
     
     var categories : [Category] = []
     var subcategories : [SubCategory] = []
@@ -44,8 +44,27 @@ class TransactionInfoManager {
         let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
         let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
         print("Day \(day) month \(month) year \(year)")*/
-        
+        transactionInfo.setId(getRandonId())
+        print(getRandonId())
         database.saveTransactionToDB(transactionInfo)
+    }
+    func updateTransaction(){
+        database.updateTransactionToDB(transactionInfo)
+    }
+    
+    func getRandonId() -> String {
+        let len = 10
+        let letters : NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        
+        var randomString : NSMutableString = NSMutableString(capacity: len)
+        
+        for (var i=0; i < len; i++){
+            var length = UInt32 (letters.length)
+            var rand = arc4random_uniform(length)
+            randomString.appendFormat("%C", letters.characterAtIndex(Int(rand)))
+        }
+        
+        return randomString as String
     }
     
     func deleteTransaction(transaction:Transaction){
@@ -56,7 +75,7 @@ class TransactionInfoManager {
         transactionInfo.setType("Expense")
         transactionInfo.setValue(0)
         transactionInfo.setDate(NSDate())
-        categories = information.getCategories(transactionInfo.getType())
+        getCategories()
         
         backToCategories()
         resetInput()
@@ -66,7 +85,14 @@ class TransactionInfoManager {
         transactionInfo.setType(transactionToEdit.type)
         transactionInfo.setValue(transactionToEdit.value)
         transactionInfo.setDate(transactionToEdit.date)
-        categories = information.getCategories(transactionInfo.getType())
+        transactionInfo.setId(transactionToEdit.id)
+        getCategories()
+        selectCategoryState = false
+        
+        selectedIndexCat = getCatIndex(transactionToEdit.subcategory.belongs)
+        getSubCategories()
+
+        selectedIndexSubCat = getSubCatIndex(transactionToEdit.subcategory)
         
     }
     func switchType(){
@@ -79,7 +105,7 @@ class TransactionInfoManager {
     }
     
     func getCategories(){
-        categories = database.getCategories(transactionInfo.getType())
+        categories = information.getCategories(transactionInfo.getType())
     }
     func saveCategory(name:String){
         print("Save category \(name)")
@@ -91,12 +117,12 @@ class TransactionInfoManager {
     }
     func getSubCategories(){
         print("before \(subcategories.count)")
-        subcategories = database.getSubCategories(categories[selectedIndexCat!])
+        subcategories = information.getSubCategories(categories[selectedIndexCat!])
         print("after \(subcategories.count)")
     }
     
     func backToCategories(){
-        category = true
+        selectCategoryState = true
         selectedIndexCat = nil
         selectedIndexSubCat = nil
         
@@ -108,6 +134,24 @@ class TransactionInfoManager {
     
     func getSelectedSubCategory() -> SubCategory {
         return subcategories[selectedIndexSubCat!]
+    }
+    
+    func getCatIndex(selectedCategory:Category) -> Int {
+        for (var i = 0; i < categories.count ; i++) {
+            if selectedCategory.name == categories[i].name {
+                return i
+            }
+        }
+        return 0
+    }
+    
+    func getSubCatIndex(selectedSubCategory:SubCategory) -> Int {
+        for (var i = 0; i < subcategories.count ; i++) {
+            if selectedSubCategory.name == subcategories[i].name {
+                return i
+            }
+        }
+        return 0
     }
     
     
