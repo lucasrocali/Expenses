@@ -99,45 +99,6 @@
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="cvHeader" reuseIdentifier="cvHeader" id="Nfv-Av-azx">
                                     <rect key="frame" x="0.0" y="64" width="592" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cSR-PC-Bdt">
-                                            <rect key="frame" x="8" y="8" width="30" height="30"/>
-                                            <state key="normal" title="&lt;">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="backToCategories:" destination="PhD-43-VSL" eventType="touchUpInside" id="aXY-jZ-2li"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tzf-ez-IOK">
-                                            <rect key="frame" x="562" y="8" width="30" height="30"/>
-                                            <state key="normal" title="+">
-                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="addCategorieOrSubCategorie:" destination="PhD-43-VSL" eventType="touchUpInside" id="jDC-fB-Y7Y"/>
-                                            </connections>
-                                        </button>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYK-Qm-Fzx" userLabel="Type">
-                                            <rect key="frame" x="268" y="10" width="59" height="30"/>
-                                            <state key="normal" title="Expense">
-                                                <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="typeAction:" destination="PhD-43-VSL" eventType="touchUpInside" id="trl-Pz-yf1"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="Tzf-ez-IOK" firstAttribute="trailing" secondItem="Nfv-Av-azx" secondAttribute="trailingMargin" id="5JT-e3-7ev"/>
-                                        <constraint firstItem="cSR-PC-Bdt" firstAttribute="top" secondItem="Nfv-Av-azx" secondAttribute="topMargin" id="LK8-pn-qsz"/>
-                                        <constraint firstItem="Tzf-ez-IOK" firstAttribute="top" secondItem="Nfv-Av-azx" secondAttribute="topMargin" id="XJV-wJ-ilL"/>
-                                        <constraint firstAttribute="centerX" secondItem="fYK-Qm-Fzx" secondAttribute="centerX" id="diQ-Qb-1N1"/>
-                                        <constraint firstItem="cSR-PC-Bdt" firstAttribute="leading" secondItem="Nfv-Av-azx" secondAttribute="leadingMargin" id="it8-U8-e8j"/>
-                                        <constraint firstAttribute="centerY" secondItem="fYK-Qm-Fzx" secondAttribute="centerY" id="xBG-os-ZR9"/>
-                                    </constraints>
                                 </collectionReusableView>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -331,7 +292,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="znH-mO-1pm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1906" y="-504"/>
+            <point key="canvasLocation" x="2580" y="1076"/>
         </scene>
         <!--Transactions View Controller-->
         <scene sceneID="dkp-YA-DjA">
@@ -372,6 +333,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="PhD-43-VSL" kind="show" identifier="listToTransaction" id="QO4-TP-WEy"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -440,4 +404,7 @@
             <point key="canvasLocation" x="966" y="1076"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="QO4-TP-WEy"/>
+    </inferredMetricsTieBreakers>
 </document>

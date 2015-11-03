@@ -12,12 +12,11 @@ import CollectionViewWaterfallLayout
 class AddTransactionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     var model = Model.sharedInstance
+    
+    var transactionState = 0 //0 to create, 1 to edit
+    var transactionIndex : Int?
    
-    
-    //let date = NSDate()
-    
-    
-    @IBAction func addCategorieOrSubCategorie(sender: AnyObject) {
+    func addCategorieOrSubCategorie() {
         let alert = UIAlertView()
         if model.transactionInfoManager.category {
             alert.title = "Enter new \(model.transactionInfoManager.transactionInfo.getType()) category"
@@ -30,6 +29,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         alert.delegate = self
         alert.show()
     }
+    
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         let buttonTitle = alertView.buttonTitleAtIndex(buttonIndex)
         ////println("\(buttonTitle) pressed")
@@ -67,7 +67,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         }
     }
     @IBAction func swpRight(sender: AnyObject) {
-        
+        print("Swipe right")
         
     }
     @IBOutlet var swpRight: UISwipeGestureRecognizer!
@@ -80,54 +80,28 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     var screenHeight: CGFloat!
     let lblTotalTapRec = UITapGestureRecognizer()
     
-    @IBOutlet weak var btnBacktToCategories: UIButton!
-    //@IBOutlet weak var btnType: UIButton!
-    @IBAction func typeAction(sender: AnyObject) {
-        /*
-        let updateType = UIButton()
-        /*updateType.textColor = monthLabel.textColor
-        updateType.font = monthLabel.font
-        updateType.textAlignment = .Center
-        updateType.text = date.globalDescription
-        updateType.sizeToFit()
-        updateType.alpha = 0
-        updateType.center = self.monthLabel.center*/
-        
-        let offset = CGFloat(48)
-        updateType.transform = CGAffineTransformMakeTranslation(0, offset)
-        updateType.transform = CGAffineTransformMakeScale(1, 0.1)
-        
-        UIView.animateWithDuration(0.35, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-            self.animationFinished = false
-            self.monthLabel.transform = CGAffineTransformMakeTranslation(0, -offset)
-            self.monthLabel.transform = CGAffineTransformMakeScale(1, 0.1)
-            self.monthLabel.alpha = 0
-            
-            updateType.alpha = 1
-            updateType.transform = CGAffineTransformIdentity
-            
-            }) { _ in
-                
-                self.animationFinished = true
-                self.monthLabel.frame = updateType.frame
-                self.monthLabel.text = updateType.text
-                self.monthLabel.transform = CGAffineTransformIdentity
-                self.monthLabel.alpha = 1
-                updateType.removeFromSuperview()
-        }
-        
-        self.view.insertSubview(updateType, aboveSubview: self.monthLabel)*/
-        
+    let btnType = UIButton()
+    let btnBackToCategories = UIButton()
+    let btnAddCategory = UIButton()
+    
+    func typePressed() {
+        //print(sender.restorationIdentifier!!)
+        setTypeName()
+    }
+    
+    func setTypeName() {
         model.transactionInfoManager.switchType()
-        let btnExpenseIncome : UIButton = sender as! UIButton
-        btnExpenseIncome.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
+        //let btnExpenseIncome : UIButton = sender as! UIButton
+        //btnExpenseIncome.
+        //btnType.setTitle("x", forState: .Normal)
         model.transactionInfoManager.backToCategories()
         self.cvCategory.reloadData()
     }
-    @IBAction func backToCategories(sender: AnyObject) {
+    
+    func backToCategories() {
         //println("back to categorie")
         model.transactionInfoManager.backToCategories()
-                self.cvCategory.reloadData()
+        self.cvCategory.reloadData()
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -146,12 +120,21 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         cvCalculator.backgroundColor = UIColor.whiteColor()
         self.automaticallyAdjustsScrollViewInsets = false
         
-        lblTotal.text = "0"
-        lblCalculation.text = "0"
+        //btnType.
         
         lblTotal.font = normalFont
         lblCalculation.font = smallDetailFont
         
+        if transactionState == 0 {  //create
+            lblTotal.text = "0"
+            lblCalculation.text = "0"
+        } else {
+            print("Lets edit \(transactionIndex!)")
+            model.transactionInfoManager.setTransactionInfo(model.balanceManager.transactions[transactionIndex!])
+            lblTotal.text = "\(model.transactionInfoManager.transactionInfo.getValue())"
+            lblCalculation.text = "\(model.transactionInfoManager.transactionInfo.getValue())"
+            //btnExpenseIncome.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
+        }
         
         
         //dequeueReusableCellWithReuseIdentifier("categorieCell", forIndexPath: indexPath) as! CategoryCollectionViewCell
@@ -310,6 +293,34 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         //println("ip = \(indexPath.item)")
         if collectionView === self.cvCategory {
             let supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath)
+
+            btnType.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            btnType.frame = CGRectMake(screenWidth/2-50, 0, 100, 50)
+            btnType.addTarget(self, action: "typePressed", forControlEvents: .TouchUpInside)
+            btnType.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
+            btnType.titleLabel?.font = normalFont
+            supplementaryView.addSubview(btnType)
+            
+            
+            btnBackToCategories.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            btnBackToCategories.frame = CGRectMake(5, 0, 50, 50)
+            btnBackToCategories.addTarget(self, action: "backToCategories", forControlEvents: .TouchUpInside)
+            btnBackToCategories.setTitle("<", forState: .Normal)
+            btnBackToCategories.titleLabel?.font = normalFont
+            if (model.transactionInfoManager.category) {
+                btnBackToCategories.hidden = true
+            } else {
+                btnBackToCategories.hidden = false
+            }
+            supplementaryView.addSubview(btnBackToCategories)
+            
+            
+            btnAddCategory.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            btnAddCategory.frame = CGRectMake(screenWidth - 50, 0, 50, 50)
+            btnAddCategory.addTarget(self, action: "addCategorieOrSubCategorie", forControlEvents: .TouchUpInside)
+            btnAddCategory.setTitle("+", forState: .Normal)
+            btnAddCategory.titleLabel?.font = normalFont
+            supplementaryView.addSubview(btnAddCategory)
             return supplementaryView
         } else {
             let supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath)

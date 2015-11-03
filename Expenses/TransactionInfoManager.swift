@@ -61,6 +61,14 @@ class TransactionInfoManager {
         backToCategories()
         resetInput()
     }
+    
+    func setTransactionInfo(transactionToEdit : Transaction) {
+        transactionInfo.setType(transactionToEdit.type)
+        transactionInfo.setValue(transactionToEdit.value)
+        transactionInfo.setDate(transactionToEdit.date)
+        categories = information.getCategories(transactionInfo.getType())
+        
+    }
     func switchType(){
         if transactionInfo.getType() == "Expense"{
             transactionInfo.setType("Income")

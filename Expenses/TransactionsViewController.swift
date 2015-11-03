@@ -37,7 +37,8 @@ class TransactionsViewController: UIViewController,UITableViewDelegate, UITableV
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
         self.view.endEditing(true)
         print("selected \(indexPath.row)")
-        transactionsTableView.reloadData()
+        performSegueWithIdentifier("listToTransaction", sender: indexPath)
+        //transactionsTableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -103,6 +104,30 @@ class TransactionsViewController: UIViewController,UITableViewDelegate, UITableV
             lblTotalBalance.textColor = greenColor
         } else {
             lblTotalBalance.textColor = redColor
+        }
+    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!)
+    {
+        if segue.identifier == "listToTransaction"
+        {
+            //print("LIST TO TRANSACTION")
+            
+            let indexPath : NSIndexPath = sender as! NSIndexPath
+
+            let editTransaction = segue.destinationViewController as! AddTransactionViewController
+            editTransaction.transactionIndex = indexPath.row
+            editTransaction.transactionState = 1
+            /*let indexPath : NSIndexPath = sender as! NSIndexPath
+            //println("bora editar indexpahtrow: \(indexPath.row)")
+            //println("Cell n: \(indexPath.row)")
+            var editBill = segue.destinationViewController as! AddBillViewController
+            editBill.billCellIndex = indexPath.row
+            editBill.billState = 1
+            
+        } else {
+            var editBill = segue.destinationViewController as! AddBillViewController
+            editBill.billState = 0
+            */
         }
     }
 
