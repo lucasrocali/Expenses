@@ -37,11 +37,29 @@ class TransactionInfoManager {
     init() {
         defaultTransactionInfo()
     }
+    
+    func saveTransaction(){
+        /*
+        let day = cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
+        let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
+        let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
+        print("Day \(day) month \(month) year \(year)")*/
+        
+        database.saveTransactionToDB(transactionInfo)
+    }
+    
+    func deleteTransaction(transaction:Transaction){
+        database.deleteTransaction(transaction)
+    }
+    
     func defaultTransactionInfo() {
         transactionInfo.setType("Expense")
         transactionInfo.setValue(0)
         transactionInfo.setDate(NSDate())
-         categories = information.getCategories(transactionInfo.getType())
+        categories = information.getCategories(transactionInfo.getType())
+        
+        backToCategories()
+        resetInput()
     }
     func switchType(){
         if transactionInfo.getType() == "Expense"{

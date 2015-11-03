@@ -117,6 +117,17 @@ class Database : InfoManager {
         }
         //CORE DATA NOT SAVING
     }
+    
+    func deleteTransaction(transaction:Transaction){
+        managedContext.deleteObject(transaction)
+        var error : NSError?
+        do {
+            try managedContext.save()
+        } catch let error1 as NSError {
+            error = error1
+        }
+         //fetchTransactions()
+    }
     /*
     func fetchCategories() -> [Category]{
     //subcategories.removeAll(keepCapacity: false)

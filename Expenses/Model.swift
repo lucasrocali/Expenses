@@ -51,9 +51,9 @@ class Model {
     }
     
     
-    var transactions : [Transaction] = []
-    
-    var database : Database = Database()
+    //var transactions : [Transaction] = []
+    var balanceManager : BalanceManager = BalanceManager()
+    //var database : Database = Database()
     
     //var date : NSDate?
     let cal = NSCalendar.currentCalendar()
@@ -71,19 +71,8 @@ class Model {
         //appDelegate = UIApplication().delegate as! AppDelegate
         //managedContext = appDelegate.managedObjectContext!
     }
-    func getTransactions(){
-        var temptransactions = database.fetchTransactions()
-        transactions = temptransactions.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
-    }
-    func saveTransaction(){
-        /*
-        let day = cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)
-        let month = cal.ordinalityOfUnit(.Month, inUnit: .Year, forDate: date)
-        let year = cal.ordinalityOfUnit(.Year, inUnit: .Era, forDate: date)
-        print("Day \(day) month \(month) year \(year)")*/
-        
-        database.saveTransactionToDB(transactionInfoManager.transactionInfo)
-    }
+    
+    
     
     func getDay(date:NSDate) -> Int{
         return cal.ordinalityOfUnit(.Day, inUnit: .Month, forDate: date)

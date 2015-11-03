@@ -120,7 +120,7 @@
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fYK-Qm-Fzx" userLabel="Type">
-                                            <rect key="frame" x="271" y="10" width="59" height="30"/>
+                                            <rect key="frame" x="268" y="10" width="59" height="30"/>
                                             <state key="normal" title="Expense">
                                                 <color key="titleColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -245,6 +245,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="cvCalculator" destination="ZzE-d4-ACi" id="Spx-D1-OlI"/>
                         <outlet property="cvCategory" destination="r4y-xH-7hX" id="ffV-ie-kLh"/>
@@ -321,6 +322,7 @@
                             </mask>
                         </variation>
                     </view>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
                         <outlet property="calendarView" destination="y1M-3V-ra6" id="KPw-Mn-FiD"/>
                         <outlet property="menuView" destination="sQK-PN-drx" id="3t9-dF-hbz"/>
@@ -343,15 +345,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EFB-uo-gOg">
-                                <rect key="frame" x="0.0" y="134" width="600" height="417"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="EFB-uo-gOg">
+                                <rect key="frame" x="4" y="134" width="592" height="417"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="expenseCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="expenseCell" textLabel="v0l-nj-O9a" detailTextLabel="dFk-Xy-8aT" style="IBUITableViewCellStyleValue2" id="usT-SP-rtD">
-                                        <rect key="frame" x="0.0" y="86" width="600" height="44"/>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="transactionCell" textLabel="v0l-nj-O9a" detailTextLabel="dFk-Xy-8aT" style="IBUITableViewCellStyleValue2" id="usT-SP-rtD" customClass="TransactionTableViewCell" customModule="Expenses" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="86" width="592" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="usT-SP-rtD" id="kh0-GG-LS1">
-                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="592" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="v0l-nj-O9a">
@@ -377,23 +379,40 @@
                                     <outlet property="delegate" destination="1hX-mY-XmA" id="ltf-7m-lmB"/>
                                 </connections>
                             </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4vh-cg-hu4" userLabel="totalBalance">
+                                <rect key="frame" x="4" y="64" width="600" height="70"/>
+                                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="70" id="mib-jg-vuy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="uy7-s5-Snf" firstAttribute="top" secondItem="EFB-uo-gOg" secondAttribute="bottom" id="2vP-lO-tYo"/>
+                            <constraint firstItem="4vh-cg-hu4" firstAttribute="leading" secondItem="flp-Yd-9cl" secondAttribute="leadingMargin" constant="-16" id="AG2-vu-ugH"/>
                             <constraint firstItem="EFB-uo-gOg" firstAttribute="top" secondItem="sMu-V9-N5a" secondAttribute="bottom" constant="70" id="Dpf-Nn-f6d"/>
+                            <constraint firstItem="4vh-cg-hu4" firstAttribute="width" secondItem="flp-Yd-9cl" secondAttribute="width" id="NPw-5t-K4a"/>
                             <constraint firstItem="EFB-uo-gOg" firstAttribute="width" secondItem="flp-Yd-9cl" secondAttribute="width" id="hhZ-Qe-Ca1"/>
                             <constraint firstAttribute="trailingMargin" secondItem="EFB-uo-gOg" secondAttribute="trailing" constant="-16" id="pn5-lE-ijZ"/>
                             <constraint firstItem="EFB-uo-gOg" firstAttribute="leading" secondItem="flp-Yd-9cl" secondAttribute="leadingMargin" constant="-16" id="sQK-G7-dSv"/>
+                            <constraint firstItem="EFB-uo-gOg" firstAttribute="top" secondItem="4vh-cg-hu4" secondAttribute="bottom" id="tgS-MM-kgf"/>
+                            <constraint firstItem="4vh-cg-hu4" firstAttribute="top" secondItem="sMu-V9-N5a" secondAttribute="bottom" id="y9s-Il-IyJ"/>
                         </constraints>
                         <variation key="default">
                             <mask key="constraints">
+                                <exclude reference="Dpf-Nn-f6d"/>
                                 <exclude reference="hhZ-Qe-Ca1"/>
                             </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" id="8TZ-Dt-fgV"/>
+                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
                     <connections>
+                        <outlet property="lblTotalBalance" destination="4vh-cg-hu4" id="Ryz-OF-Tmf"/>
                         <outlet property="transactionsTableView" destination="EFB-uo-gOg" id="U76-nj-zN2"/>
                     </connections>
                 </viewController>

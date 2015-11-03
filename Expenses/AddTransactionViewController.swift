@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CollectionViewWaterfallLayout
 
 class AddTransactionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -55,7 +56,13 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     @IBAction func saveTransaction(sender: AnyObject) {
         if (model.transactionInfoManager.selectedIndexCat != nil && model.transactionInfoManager.selectedIndexSubCat != nil) {
             print("Save Transactio\n category : \(model.transactionInfoManager.selectedIndexCat!) \n subcategory \(model.transactionInfoManager.selectedIndexSubCat!) \n Total \(lblTotal.text!)")
-            model.saveTransaction() 
+            model.transactionInfoManager.saveTransaction()
+            
+            model.transactionInfoManager.defaultTransactionInfo()
+           
+            self.cvCategory.reloadData()
+            lblTotal.text = "0"
+            lblCalculation.text = "0"
            
         }
     }
@@ -74,7 +81,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     let lblTotalTapRec = UITapGestureRecognizer()
     
     @IBOutlet weak var btnBacktToCategories: UIButton!
-    @IBOutlet weak var btnType: UIButton!
+    //@IBOutlet weak var btnType: UIButton!
     @IBAction func typeAction(sender: AnyObject) {
         /*
         let updateType = UIButton()
@@ -142,6 +149,12 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         lblTotal.text = "0"
         lblCalculation.text = "0"
         
+        lblTotal.font = normalFont
+        lblCalculation.font = smallDetailFont
+        
+        
+        
+        //dequeueReusableCellWithReuseIdentifier("categorieCell", forIndexPath: indexPath) as! CategoryCollectionViewCell
         lblTotalTapRec.addTarget(self, action: "lblTotalTapped")
         lblTotal.addGestureRecognizer(lblTotalTapRec)
     
@@ -176,6 +189,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         }
         return model.transactionInfoManager.calculatorNumbers.count
     }
+
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if collectionView === self.cvCategory {
@@ -192,18 +206,20 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
+            cell.lblName.font = normalFont
             if model.transactionInfoManager.category{
                 cell.lblName.text = model.transactionInfoManager.categories[indexPath.row].name
             } else {
                 cell.lblName.text = model.transactionInfoManager.subcategories[indexPath.row].name
             }
+            
             return cell
         } else {
             let cell : CalculatorCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("calculatorCell", forIndexPath: indexPath) as! CalculatorCollectionViewCell
             //cell.backgroundColor = UIColor.whiteColor()
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
-            
+            cell.lblNumber.font = normalFont
             if indexPath.row % 5 == 0 {     //non calculator part
                 cell.backgroundColor = UIColor.grayColor()
                 if (indexPath.row == 0){    //date
