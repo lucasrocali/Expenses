@@ -25,6 +25,13 @@ class CalendarViewController: UIViewController {
         super.viewDidLoad()
         
         monthLabel.text = CVDate(date: NSDate()).globalDescription
+        
+        //layout
+        calendarView.backgroundColor = whiteColor
+        
+        menuView.backgroundColor = orangeBaseColor
+        
+        monthLabel.font = boldFont
     }
     
     override func viewDidLayoutSubviews() {
@@ -70,7 +77,7 @@ extension CalendarViewController: CVCalendarViewDelegate, CVCalendarMenuViewDele
     func presentedDateUpdated(date: CVDate) {
         if monthLabel.text != date.globalDescription && self.animationFinished {
             let updatedMonthLabel = UILabel()
-            updatedMonthLabel.textColor = monthLabel.textColor
+            updatedMonthLabel.textColor = greenBaseColor //monthLabel.textColor
             updatedMonthLabel.font = monthLabel.font
             updatedMonthLabel.textAlignment = .Center
             updatedMonthLabel.text = date.globalDescription

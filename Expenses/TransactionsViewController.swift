@@ -77,6 +77,12 @@ class TransactionsViewController: UIViewController,UITableViewDelegate, UITableV
         
         cell.lblValue.textColor = color!
         
+        if indexPath.row % 2 == 0 {
+            cell.backgroundColor = lightGrayColor
+        } else {
+            cell.backgroundColor = mediumGrayColor
+        }
+        
         cell.lblCategory.font = normalFont
         cell.lblSubCategory.font = detailFont
         cell.lblValue.font = normalFont

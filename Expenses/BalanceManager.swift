@@ -18,7 +18,7 @@ class BalanceManager {
     
     func getTransactions(){
         var temptransactions = database.fetchTransactions()
-        transactions = temptransactions.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedAscending })
+        transactions = temptransactions.sort({ $0.date.compare($1.date) == NSComparisonResult.OrderedDescending })
         getExpenses()
         getIncomes()
     }

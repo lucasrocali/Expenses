@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CollectionViewWaterfallLayout
 
 class AddTransactionViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
@@ -118,7 +117,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         self.cvCategory.allowsMultipleSelection = true
         self.cvCategory.delaysContentTouches = false
         
-        cvCategory.backgroundColor = UIColor.grayColor()
+        cvCategory.backgroundColor = whiteColor
         
         self.cvCalculator.allowsMultipleSelection = true
         self.cvCalculator.delaysContentTouches = false
@@ -184,16 +183,18 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if collectionView === self.cvCategory {
-            // var cellidentifier : String = "categoryCell"
             let cell : CategoryCollectionViewCell = collectionView.dequeueReusableCellWithReuseIdentifier("categorieCell", forIndexPath: indexPath) as! CategoryCollectionViewCell
-            //cell.backgroundColor = UIColor.whiteColor()
+            cell.backgroundColor = whiteColor
+            cell.lblName.textColor = blackColor
             //cell.layer.borderColor = UIColor.blackColor().CGColor
-            cell.layer.borderWidth = 0.5
-            cell.backgroundColor = UIColor.grayColor()
+            cell.layer.borderWidth = 0.3
+            //cell.backgroundColor = UIColor.grayColor()
             if model.transactionInfoManager.selectedIndexSubCat == indexPath.row && !model.transactionInfoManager.selectCategoryState {
-                cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+                cell.backgroundColor = greenBaseColor
+                cell.lblName.textColor = whiteColor
                 model.transactionInfoManager.setSubCategory()
             }
+            cell.layer.borderColor = darkGrayColor.CGColor
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             //cell.frame.size.width = screenWidth / 3
             //cell.frame.size.height = screenWidth / 3
@@ -210,17 +211,25 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             //cell.backgroundColor = UIColor.whiteColor()
             //cell.layer.borderColor = UIColor.blackColor().CGColor
             cell.layer.borderWidth = 0.5
+            cell.layer.borderColor = darkGrayColor.CGColor
+            
+           
+            
+           
+
+           // cell.lblNumber.textColor = UIColor.blackColor()
             cell.lblNumber.font = normalFont
             if indexPath.row % 5 == 0 {     //non calculator part
-                cell.backgroundColor = UIColor.grayColor()
+                 cell.backgroundColor = mediumGrayColor
                 if (indexPath.row == 0){    //date
                     cell.lblNumber.text = model.getDateString(model.transactionInfoManager.transactionInfo.getDate())
                 } else { //others
                     cell.lblNumber.text = model.transactionInfoManager.calculatorNumbers[indexPath.row]
                 }
             } else {    //calculator part
-                cell.backgroundColor = UIColor.whiteColor()
+                //cell.backgroundColor = UIColor.whiteColor()
                 cell.lblNumber.text = model.transactionInfoManager.calculatorNumbers[indexPath.row]
+                 cell.backgroundColor = lightGrayColor
             }
             
             //cell.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
@@ -244,11 +253,28 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
                 }
             }
             
+            
+            
             print("Cell \(indexPath.row) selected")
-            let cell = collectionView.cellForItemAtIndexPath(indexPath)
-            cell!.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+            let cell : CategoryCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath) as! CategoryCollectionViewCell
+            
+           
+            
+
+            
+            cell.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
             if !model.transactionInfoManager.selectCategoryState {
                 model.transactionInfoManager.selectedIndexSubCat = indexPath.row
+                /*(cell.lblName.transform = CGAffineTransformMakeScale(0.1, 0.1)
+                UIView.animateWithDuration(1.0,
+                    delay: 0,
+                    usingSpringWithDamping: 0.2,
+                    initialSpringVelocity: 4.0,
+                    options: UIViewAnimationOptions.AllowUserInteraction,
+                    animations: {
+                        cell.lblName.transform = CGAffineTransformIdentity
+                    }, completion: nil)*/
+
             } else {
                 model.transactionInfoManager.selectedIndexCat = indexPath.row
                 model.transactionInfoManager.getSubCategories()
@@ -257,13 +283,26 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             
             self.cvCategory.reloadData()
         } else {
+             let cell : CalculatorCollectionViewCell = collectionView.cellForItemAtIndexPath(indexPath)  as! CalculatorCollectionViewCell
+        
+            cell.lblNumber.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            UIView.animateWithDuration(1.0,
+                delay: 0,
+                usingSpringWithDamping: 0.2,
+                initialSpringVelocity: 4.0,
+                options: UIViewAnimationOptions.AllowUserInteraction,
+                animations: {
+                     cell.lblNumber.transform = CGAffineTransformIdentity
+                }, completion: nil)
+            
+
             
             if indexPath.row % 5 == 0 { //Its not part of calculator
                 print("Non calculator part")
                 if indexPath.row == 0{
-                    var storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+                    let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
                     
-                    var vc: UIViewController = storyboard.instantiateViewControllerWithIdentifier("CalendarViewController") as! UIViewController
+                    let vc: UIViewController = storyboard.instantiateViewControllerWithIdentifier("CalendarViewController") 
                     
                     //var vc: NewViewController = storyboard.instantiateViewControllerWithIdentifier("newView") as NewViewController
                     
@@ -282,7 +321,7 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         
     }
     
-    
+    var animationFinished = true
     
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath)
@@ -301,16 +340,27 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
         //println("ip = \(indexPath.item)")
         if collectionView === self.cvCategory {
             let supplementaryView = cvCategory.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvHeader", forIndexPath: indexPath)
-
-            btnType.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            
+            btnType.setTitleColor(UIColor.blackColor(), forState: .Normal)
             btnType.frame = CGRectMake(screenWidth/2-50, 0, 100, 50)
             btnType.addTarget(self, action: "typePressed", forControlEvents: .TouchUpInside)
             btnType.setTitle(model.transactionInfoManager.transactionInfo.getType(), forState: .Normal)
-            btnType.titleLabel?.font = normalFont
+            btnType.titleLabel?.font = boldFont
             supplementaryView.addSubview(btnType)
             
+            /*
+            btnType.transform = CGAffineTransformMakeScale(0.1, 0.1)
+            UIView.animateWithDuration(1.0,
+                delay: 0,
+                usingSpringWithDamping: 0.2,
+                initialSpringVelocity: 4.0,
+                options: UIViewAnimationOptions.AllowUserInteraction,
+                animations: {
+                    self.btnType.transform = CGAffineTransformIdentity
+                }, completion: nil)
+            */
             
-            btnBackToCategories.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            btnBackToCategories.setTitleColor(UIColor.blackColor(), forState: .Normal)
             btnBackToCategories.frame = CGRectMake(5, 0, 50, 50)
             btnBackToCategories.addTarget(self, action: "backToCategories", forControlEvents: .TouchUpInside)
             btnBackToCategories.setTitle("<", forState: .Normal)
@@ -323,12 +373,14 @@ class AddTransactionViewController: UIViewController, UICollectionViewDataSource
             supplementaryView.addSubview(btnBackToCategories)
             
             
-            btnAddCategory.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+            btnAddCategory.setTitleColor(UIColor.blackColor(), forState: .Normal)
             btnAddCategory.frame = CGRectMake(screenWidth - 50, 0, 50, 50)
             btnAddCategory.addTarget(self, action: "addCategorieOrSubCategorie", forControlEvents: .TouchUpInside)
             btnAddCategory.setTitle("+", forState: .Normal)
             btnAddCategory.titleLabel?.font = normalFont
             supplementaryView.addSubview(btnAddCategory)
+            
+            supplementaryView.backgroundColor = orangeBaseColor
             return supplementaryView
         } else {
             let supplementaryView = cvCalculator.dequeueReusableSupplementaryViewOfKind(kind, withReuseIdentifier:"cvCalculatorHeader", forIndexPath: indexPath)

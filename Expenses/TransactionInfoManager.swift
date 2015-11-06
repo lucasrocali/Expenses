@@ -31,7 +31,7 @@ class TransactionInfoManager {
     var calculationText = ""
     var oneDot : Bool = false
     var oneOp : Bool = false
-    var calculatorNumbers = ["Date","7","8","9","/","Photo","4","5","6","x","Note","1","2","3","-","Location","0",".","=","+"]
+    var calculatorNumbers = ["Date","7","8","9","/","Photo","4","5","6","x","Note","1","2","3","-","Loc","0",".","=","+"]
     let calculator:Calculator = Calculator()
     
     init() {
@@ -93,6 +93,14 @@ class TransactionInfoManager {
         getSubCategories()
 
         selectedIndexSubCat = getSubCatIndex(transactionToEdit.subcategory)
+        
+        //calculating
+        integerNum = 2
+        //calculating = "0"
+        totalText = "\(transactionToEdit.value)"
+        calculationText = "\(transactionToEdit.value)"
+        oneDot = true
+        //oneOp = false
         
     }
     func switchType(){
