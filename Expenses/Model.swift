@@ -53,6 +53,8 @@ class Model {
     
     //var transactions : [Transaction] = []
     var balanceManager : BalanceManager = BalanceManager()
+    
+    var categoryManager: CategoryManager = CategoryManager()
     //var database : Database = Database()
     
     //var date : NSDate?
@@ -66,6 +68,7 @@ class Model {
 
     init() {
         print("criando classe")
+        balanceManager.currentMonth = balanceManager.getMonth(balanceManager.currentDate)
         //date = NSDate()
         //categories = information.getCategories()
         //appDelegate = UIApplication().delegate as! AppDelegate
